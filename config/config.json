@@ -1,0 +1,7 @@
+{
+    "pitcartMode": "true",
+    "localPort": "8080",
+    "mongoDBAddress": "",
+    "externalAPIRoot": "/",
+    "sheetsAPIRoot": ""
+}
