@@ -1,15 +1,22 @@
 {
-  "private": true,
+  "name": "electron-battery-logger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "start": "electron ."
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "devDependencies": {
-    "electron": "^22.0.3",
-    "nuxt": "^3.0.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mikecerc/Electron-Battery-Logger.git"
+  },
+  "author": "Michael Cercone",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mikecerc/Electron-Battery-Logger/issues"
+  },
+  "homepage": "https://github.com/Mikecerc/Electron-Battery-Logger#readme",
+  "dependencies": {
+    "electron": "^22.0.3"
   }
 }
