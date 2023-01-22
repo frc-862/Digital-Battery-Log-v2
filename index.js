@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, session, ipcMain} = require('electron')
+const { app, BrowserWindow, session, ipcMain } = require('electron')
 const path = require('path')
 
 const createWindow = () => {
@@ -11,7 +11,8 @@ const createWindow = () => {
       preload: "./preload.js",
       nodeIntegration: false,
       contextIsolation: true,
-    }
+    },
+    kiosk: true,
   })
 
   // and load the index.html of the app.
@@ -35,7 +36,7 @@ app.whenReady().then(() => {
       }
     })
   })
-  
+
   app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
