@@ -1,34 +1,29 @@
-const {app, BrowserWindow, ipcMain, dialog} = require('electron')
-const path = require('path')
+const { app, BrowserWindow } = require('electron');
 
-async function handleFileOpen() {
-  const { canceled, filePaths } = await dialog.showOpenDialog()
-  if (canceled) {
-    return
-  } else {
-    return filePaths[0]
-  }
-}
-
-function createWindow () {
-  const mainWindow = new BrowserWindow({
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    },
+const createWindow = () => {
+  const win = new BrowserWindow({
     width: 800,
-    height: 600
-  })
-  mainWindow.loadFile('client/dist/index.html');
-}
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+    }
+  });
+
+  win.loadFile('./src/renderer/dist/index.html');
+};
 
 app.whenReady().then(() => {
-  ipcMain.handle('dialog:openFile', handleFileOpen)
-  createWindow()
-  app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-})
+  createWindow();
 
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit()
-})
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
