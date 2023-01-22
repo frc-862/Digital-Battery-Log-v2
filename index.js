@@ -14,9 +14,11 @@ function createWindow () {
   const mainWindow = new BrowserWindow({
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
-    }
+    },
+    width: 800,
+    height: 600
   })
-  mainWindow.loadFile('client/.output/public/index.html');
+  mainWindow.loadFile('client/dist/index.html');
 }
 
 app.whenReady().then(() => {
