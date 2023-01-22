@@ -7,7 +7,12 @@ export default defineNuxtConfig({
                     additionalData: '@use "@/assets/scss/_mixins.scss" as *; @use "@/assets/scss/_variables.scss" as *; @use "@/assets/scss/_global.scss" as *;'
                 }
             }
-        }
+        },
+
     },
+    app: {
+        baseURL: "./"
+    },
+    generate: {},
     ssr: false,
 })
