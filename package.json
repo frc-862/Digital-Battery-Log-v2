@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron --trace-warnings .",
-    "generate": "cd ./client && npm run generate"
+    "start": "electron .",
+    "generate": "cd ./src/client && npm run generate"
   },
   "repository": {
     "type": "git",
