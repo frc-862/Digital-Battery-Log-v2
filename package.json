@@ -4,9 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "generate": "cd ./src/client && npm run generate"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxi generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
   },
   "repository": {
     "type": "git",
@@ -19,6 +22,10 @@
   },
   "homepage": "https://github.com/Mikecerc/Electron-Battery-Logger#readme",
   "dependencies": {
-    "electron": "^22.0.3"
+    "electron": "^22.0.3",
+    "sass": "^1.57.1"
+  },
+  "devDependencies": {
+    "nuxt": "^3.0.0"
   }
 }
