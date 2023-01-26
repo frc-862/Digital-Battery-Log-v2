@@ -12,6 +12,8 @@ export default defineNuxtConfig({
     app: {
         baseURL: "./"
     },
-    srcDir: "src/client",
+    srcDir: "src/renderer",
     ssr: false,
+    typescript: {
+    }
 })

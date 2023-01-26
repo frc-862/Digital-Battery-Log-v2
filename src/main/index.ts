@@ -1,26 +1,31 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, session, ipcMain } = require('electron')
-const path = require('path')
+import { app, BrowserWindow, session, ipcMain } from 'electron';
+import path from 'path'
+import { kioskMode } from "./config/config.js";
 
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 700,
     webPreferences: {
       preload: "./preload.js",
       nodeIntegration: false,
       contextIsolation: true,
     },
-    kiosk: true,
+    kiosk: kioskMode,
   })
-
-  // and load the index.html of the app.
-  mainWindow.loadFile('./src/client/.output/public/index.html')
+  if (app.commandLine.hasSwitch("dev")) {
+    mainWindow.loadURL("http://localhost:3000");
+    //mainWindow.webContents.openDevTools()
+  } else {
+    // and load the index.html of the app.
+  mainWindow.loadFile('../../.output/public/index.html')
   //mainWindow.loadFile("./src/renderer/dist/index.html")
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  }
+  
 }
 
 // This method will be called when Electron has finished
