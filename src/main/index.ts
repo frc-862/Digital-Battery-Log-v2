@@ -15,17 +15,24 @@ const createWindow = () => {
     },
     kiosk: kioskMode,
   })
+
+  ipcMain.on('sendMessage', (event, message) => {
+    const webContents = event.sender
+    const win = BrowserWindow.fromWebContents(webContents)
+    console.log(message)
+  })
+
   if (app.commandLine.hasSwitch("dev")) {
     mainWindow.loadURL("http://localhost:3000");
     //mainWindow.webContents.openDevTools()
   } else {
     // and load the index.html of the app.
-  mainWindow.loadFile('../../.output/public/index.html')
-  //mainWindow.loadFile("./src/renderer/dist/index.html")
+    mainWindow.loadFile('../../.output/public/index.html')
+    //mainWindow.loadFile("./src/renderer/dist/index.html")
 
-  // Open the DevTools.
+    // Open the DevTools.
   }
-  
+
 }
 
 // This method will be called when Electron has finished

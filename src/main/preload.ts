@@ -1,5 +1,5 @@
 import {contextBridge, ipcRenderer} from 'electron';
 
 contextBridge.exposeInMainWorld('electron', {
-  ipcRenderer: ipcRenderer,
+  sendMessage: (message: string) => ipcRenderer.send('sendMessage', message),
 })

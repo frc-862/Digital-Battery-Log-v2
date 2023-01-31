@@ -28,7 +28,7 @@
     position: relative;
     width: 25%;
     height: 75%;
-    border-radius: 10%;
+    border-radius: 50px;
     display: flex;
     align-items: center;
     align-content: center;

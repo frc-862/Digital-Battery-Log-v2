@@ -5,8 +5,9 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "electron ./dist/main/index.js",
-    "startDev": "electron ./dist/main/index.js --dev",
+    "startElectron": "electron ./dist/main/index.js",
+    "startDev": "tsc && node ./dist/main/scripts/devServer.js",
+    "startElectronDev": "electron ./dist/main/index.js --dev",
     "build": "tsc",
     "dev": "nuxt dev",
     "generate": "nuxi generate",

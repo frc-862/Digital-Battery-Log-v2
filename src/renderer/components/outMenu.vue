@@ -2,7 +2,7 @@
     <div class="out-menu-container">
         <div class="keyboard">
             <div class="column">
-                <div class="key">
+                <div class="key" @onclick="msg('1')">
                     <p>1</p>
                 </div>
                 <div class="key">
@@ -105,6 +105,7 @@
         margin: 0;
         color: $Textcolor;
     }
+
     i {
         font-size: 2rem;
         color: $Textcolor;
@@ -112,5 +113,8 @@
 }
 </style>
 <script setup lang=ts>
-    
+
+function msg(msg: string) {
+    window.electron.sendMessage(msg);
+}
 </script>
