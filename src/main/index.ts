@@ -9,18 +9,19 @@ const createWindow = () => {
     width: 1200,
     height: 700,
     webPreferences: {
-      preload: "./preload.js",
+      preload: path.join(__dirname, './preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
     },
     kiosk: kioskMode,
+    frame: false,
+    
   })
-
-  ipcMain.on('sendMessage', (event, message) => {
-    const webContents = event.sender
-    const win = BrowserWindow.fromWebContents(webContents)
+/*
+  ipcMain.on('send-message', (event, message) => {
     console.log(message)
   })
+  */
 
   if (app.commandLine.hasSwitch("dev")) {
     mainWindow.loadURL("http://localhost:3000");
@@ -65,6 +66,3 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-ipcMain.on('message', (event, message) => {
-  console.log(message);
-})
