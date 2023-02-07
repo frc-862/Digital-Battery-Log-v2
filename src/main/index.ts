@@ -1,10 +1,10 @@
 // Modules to control application life and create native browser window
 import { app, BrowserWindow, session, ipcMain } from 'electron';
 import path from 'path'
-import { kioskMode } from "./config/config.js";
-
+import { config } from './store'
 const createWindow = () => {
   // Create the browser window.
+  console.log(app.getPath("userData"))
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 700,
@@ -13,15 +13,15 @@ const createWindow = () => {
       nodeIntegration: false,
       contextIsolation: true,
     },
-    kiosk: kioskMode,
+    kiosk: config.get('kioskMode'),
     frame: false,
-    
+
   })
-/*
-  ipcMain.on('send-message', (event, message) => {
-    console.log(message)
-  })
-  */
+  /*
+    ipcMain.on('send-message', (event, message) => {
+      console.log(message)
+    })
+    */
 
   if (app.commandLine.hasSwitch("dev")) {
     mainWindow.loadURL("http://localhost:3000");

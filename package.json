@@ -6,10 +6,10 @@
   "type": "commonjs",
   "scripts": {
     "startElectron": "electron ./dist/main/index.js",
-    "startDev": "tsc && node ./dist/main/scripts/devServer.js",
+    "dev": "tsc -p ./src/main/tsconfig.json && node ./dist/main/scripts/devServer.js",
     "startElectronDev": "electron ./dist/main/index.js --dev",
     "build": "tsc",
-    "dev": "nuxt dev",
+    "nuxtDev": "nuxt dev",
     "generate": "nuxi generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/Mikecerc/Electron-Battery-Logger#readme",
   "dependencies": {
     "electron": "^22.0.3",
+    "electron-store": "^8.1.0",
     "sass": "^1.57.1"
   },
   "devDependencies": {

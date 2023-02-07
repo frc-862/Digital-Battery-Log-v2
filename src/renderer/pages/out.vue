@@ -15,7 +15,7 @@
     width: 100%;
     height: 100%;
     background-color: $Primarycolor;
-    flex: display; 
+    display: flex; 
     flex-direction: column;
     justify-content: center;
     align-items: center;

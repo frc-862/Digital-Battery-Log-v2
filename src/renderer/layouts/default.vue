@@ -1,7 +1,11 @@
 <template>
     <div class="page-container">
-        <Nav />
-        <slot />
+        <nav class="nav">
+            <Nav />
+        </nav>
+        <div class="page">
+            <slot />
+        </div>
     </div>
 </template>
 <style lang="scss">
@@ -13,9 +17,21 @@
     position: fixed;
     width: 100%;
     height: 100%;
-    flex: display; 
+    display: flex;
     flex-direction: column;
+    justify-items: center;
     justify-content: center;
     align-items: center;
 }
+
+.nav {
+    width: 100%;
+    height: 20%;
+}
+
+.page {
+    width: 100%;
+    height: 80%;
+}
+
 </style>

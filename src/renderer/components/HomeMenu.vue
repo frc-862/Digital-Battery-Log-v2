@@ -18,7 +18,7 @@
     justify-content: center;
     align-items: center;
     align-content: center;
-    height: 80%;
+    height: 100%;
     width: 100%;
     gap: 5%;
 }

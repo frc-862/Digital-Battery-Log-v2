@@ -1,4 +1,6 @@
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+//@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css");
+@import "../fontawesome6/scss/fontawesome.scss";
+@import "../fontawesome6/scss/solid.scss";
 html {
     overflow: hidden;
     scrollbar-width: none;

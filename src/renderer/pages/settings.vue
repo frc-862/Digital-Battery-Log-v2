@@ -1,8 +1,8 @@
 <template>
     <div class="page-container">
-            <NuxtLayout>
-                <HomeMenu />
-            </NuxtLayout>
+        <NuxtLayout>
+            <settingsMenu />
+        </NuxtLayout>
     </div>
 </template>
 <style lang="scss">

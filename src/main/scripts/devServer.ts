@@ -1,6 +1,6 @@
 import { ChildProcess } from "child_process";
 import { spawn } from 'child_process';
-const child = spawn('npm run dev', {
+const child = spawn('npm run nuxtDev', {
     shell: true,
     stdio: 'inherit'
 });
