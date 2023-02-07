@@ -1,21 +1,43 @@
 <template>
     <div class="container">
-        <div class="instructions">akj</div>
+        <div class="instructions">
+            <p v-show="progression == 0">Please Enter The Battery Number</p>
+            <p v-show="progression == 1">Please Enter The State of Charge</p>
+            <p v-show="progression == 2">Please Enter The Internal Resistance (RINT)</p>
+        </div>
         <div class="out-menu-container">
             <div class="info">
-                <div class="batteryNum" :class="{highlight: progression == 0}">
+                <div class="batteryNum"
+                    :class="{ highlight: progression == 0, warn: warn == true && progression == 0 }">
                     <p>Battery: {{ battery.slice(0, 2) }}</p>
-                    <p v-if="battery.length >= 2">.</p>
+                    <p v-show="battery.length >= 2">.</p>
                     <p>{{ battery.slice(2, 4) }}</p>
                 </div>
-                <div class="soc" :class="{highlight: progression == 1}">
-                    <p>State of Charge: {{ soc }}</p>
-                    <p v-if="soc.length >= 1">%</p>
+                <div class=warningMessage v-show="progression == 0 && warn == true">
+                    <p>
+                        <i class="fa-solid fa-triangle-exclamation fa-2x"></i>
+                        <span>{{ warnReason }} </span>
+                    </p>
                 </div>
-                <div class="rint" :class="{highlight: progression == 2}">
-                    <p>Internal Resistance:</p>
-                    <p v-if="rint.length >= 1">0.</p>
+                <div class="soc" :class="{ highlight: progression == 1, warn: warn == true && progression == 1 }">
+                    <p>State of Charge: {{ soc }}</p>
+                    <p v-show="soc.length >= 1">%</p>
+                </div>
+                <div class="warningMessage" v-show="progression == 1 && warn == true">
+                    <p>
+                        <i class="fa-solid fa-triangle-exclamation fa-2x"></i>
+                        <span>{{ warnReason }} </span>
+                    </p>
+                </div>
+                <div class="rint" :class="{ highlight: progression == 2, warn: warn == true && progression == 2 }">
+                    <p>Internal Resistance: 0.</p>
                     <p>{{ rint }}</p>
+                </div>
+                <div class="warningMessage" v-show="progression == 2 && warn == true">
+                    <p>
+                        <i class="fa-solid fa-triangle-exclamation fa-2x"></i>
+                        <span>{{ warnReason }} </span>
+                    </p>
                 </div>
             </div>
             <div class="keyboard">
@@ -72,27 +94,63 @@
 <script setup lang=ts>
 import { ref } from 'vue';
 import type { Ref } from 'vue';
-defineProps<{
-    str: Ref<string>;
-    battery: Ref<string>;
-    soc: Ref<string>;
-    rint: Ref<string>;
-    progression: Ref<number>;
-}>();
+const batteryNumberLength: number = 4;
+const batteryRange = {
+    year: [20, 23],
+    number: [1, 8]
+}
+const socRange: number[] = [0, 130];
+const rintRange: number[] = [0, 999];
+const socLength: number[] = [1,3];
+const rintLength: number = 3;
 
 let str: Ref<string> = ref("");
 let progression: Ref<number> = ref(0);
 let battery: Ref<string> = ref("");
 let soc: Ref<string> = ref("");
 let rint: Ref<string> = ref("");
+let warn: Ref<boolean> = ref(false);
+let warnReason: Ref<string> = ref("");
 
 function log(key: number) {
-    if (key < 10 && str.value.length < 4) {
-        str.value += key.toString();
+    console.log(str)
+    if (key == 10) {
+        if (checkRange()) {
+            progression.value++;
+            str.value = "";
+        }
     }
-    if (key == 11) {
+    else if (key == 11) {
         str.value = str.value.slice(0, str.value.length - 1);
+        update();
+    } else {
+        switch (progression.value) {
+            case 0:
+                if (str.value.length < batteryNumberLength) {
+                    str.value += key.toString();
+                }
+                update();
+                if (warn.value == true) checkRange();
+                break;
+            case 1:
+                if (str.value.length < socLength[1]) {
+                    str.value += key.toString();
+                }
+                update();
+                if (warn.value == true) checkRange()
+                break;
+            case 2:
+                if (str.value.length < rintLength) {
+                    str.value += key.toString();
+                }
+                update();
+                if (warn.value == true) checkRange();
+                break;
+        }
     }
+
+}
+function update() {
     switch (progression.value) {
         case 0:
             battery.value = str.value;
@@ -104,22 +162,103 @@ function log(key: number) {
             rint.value = str.value;
             break;
     }
-    if (key == 10) {
-        progression.value++;
-        str.value = "";
-    }
 }
 function back() {
     if (progression.value == 0) return;
     progression.value--;
+    switch (progression.value) {
+        case 0:
+            str.value = battery.value;
+            break;
+        case 1:
+            str.value = soc.value;
+            break;
+        case 2:
+            str.value = rint.value;
+            break;
+    }
+}
+function checkRange() {
+    switch (progression.value) {
+        case 0:
+            if (parseInt(battery.value.slice(2, 4)) < batteryRange.number[0] || parseInt(battery.value.slice(2, 4)) > batteryRange.number[1]) {
+                warn.value = true;
+                warnReason.value = "Battery number is out of range";
+                break;
+            }
+            if (parseInt(battery.value.slice(0, 2)) < batteryRange.year[0] || parseInt(battery.value.slice(0, 2)) > batteryRange.year[1]) {
+                warn.value = true;
+                warnReason.value = "Battery year is out of range";
+                break;
+            }
+            if (battery.value.length < batteryNumberLength) {
+                warn.value = true;
+                warnReason.value = "Battery number is too short";
+                break;
+            }
+            warn.value = false;
+            warnReason.value = "";
+            return true;
+        case 1:
+            if (parseInt(soc.value) < socRange[0] || parseInt(soc.value) > socRange[1]) {
+                warn.value = true;
+                warnReason.value = "SOC is out of range";
+                break;
+            }
+            if (soc.value.length < socLength[0] || soc.value.length > socLength[1]) {
+                warn.value = true;
+                warnReason.value = "SOC is too short";
+                break;
+            }
+            warn.value = false;
+            warnReason.value = "";
+            return true;
+        case 2:
+            if (parseInt(rint.value) < rintRange[0] || parseInt(rint.value) > rintRange[1]) {
+                warn.value = true;
+                warnReason.value = "RINT is out of range";
+                break;
+            }
+            if (rint.value.length < rintLength) {
+                warn.value = true;
+                warnReason.value = "RINT is too short";
+                break;
+            }
+            warn.value = false;
+            warnReason.value = "";
+            return true;
+    }
 }
 </script>
 <style lang="scss">
+.instructions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+    color: $Secondarytextcolor;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.warningMessage {
+    color: $Warningcolor;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
 .highlight {
     border: 5px solid $Tertiarycolor;
     border-radius: 1.5em;
     padding: 0.5em;
 }
+
+.warn {
+    border: 5px solid $Warningcolor;
+}
+
 .footer {
     display: flex;
     flex-direction: row;
@@ -128,7 +267,8 @@ function back() {
     width: 100%;
     height: 20%;
     color: white;
-    & > * {
+
+    &>* {
         color: $Secondarytextcolor;
     }
 }
@@ -143,7 +283,9 @@ function back() {
     border-top: 5px solid $Secondarycolor;
 }
 
-.batteryNum, .soc, .rint {
+.batteryNum,
+.soc,
+.rint {
     display: flex;
     flex-direction: row;
 
@@ -223,10 +365,11 @@ function back() {
         color: $Textcolor;
     }
 
-    i{
+    i {
         font-size: 2rem;
         color: $Textcolor;
     }
+
     .back {
         color: $Textcolor;
     }
