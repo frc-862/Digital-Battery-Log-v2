@@ -1,11 +1,11 @@
 <template>
     <div class="container">
-        <div class="instructions">
+        <div class="instructions" v-show="progression < 3">
             <p v-show="progression == 0">Please Enter The Battery Number</p>
             <p v-show="progression == 1">Please Enter The State of Charge</p>
             <p v-show="progression == 2">Please Enter The Internal Resistance (RINT)</p>
         </div>
-        <div class="out-menu-container">
+        <div class="out-menu-container" v-show="submitted == false">
             <div class="info">
                 <div class="batteryNum"
                     :class="{ highlight: progression == 0, warn: warn == true && progression == 0 }">
@@ -40,7 +40,7 @@
                     </p>
                 </div>
             </div>
-            <div class="keyboard">
+            <div class="keyboard" v-show="progression <=2">
                 <div class="column">
                     <div class="key" @click="log(1)">
                         <p>1</p>
@@ -84,7 +84,21 @@
                     </div>
                 </div>
             </div>
+            <div class=submit v-show="progression > 2">
+                <span>Are you sure you want to submit?</span>
+                <div class= "submit-buttons">
+                    <div class="submit-button" @click="submit()">
+                        <p><i class="fa-solid fa-check fa-5x"></i></p>
+                    </div>
+                    <div class="submit-button" @click="back()">
+                        <p><i class="fa-solid fa-times fa-5x"></i></p>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="submitted" v-show="submitted == true">
+            <p style="color: white">Submitted</p>
+            </div>
         <div class="footer">
             <nuxtLink to="/" v-show="progression == 0"><i class="fa-solid fa-left-long fa-3x"></i></nuxtLink>
             <i v-show="progression != 0" @click="back()" class="fa-solid fa-left-long fa-3x"></i>
@@ -111,9 +125,16 @@ let soc: Ref<string> = ref("");
 let rint: Ref<string> = ref("");
 let warn: Ref<boolean> = ref(false);
 let warnReason: Ref<string> = ref("");
+let submitted: Ref<boolean> = ref(false);
 
+function submit() {
+    signOut(battery.value, soc.value, rint.value);
+    submitted.value = true;
+    setTimeout(() => {
+        navigateTo("/")
+    }, 3000)
+}
 function log(key: number) {
-    console.log(str)
     if (key == 10) {
         if (checkRange()) {
             progression.value++;
@@ -231,6 +252,38 @@ function checkRange() {
 }
 </script>
 <style lang="scss">
+.submit-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    justify-items: center;
+    gap: 20%;
+    .submit-button {
+        width: 100px;
+        height: 100px;
+        color: $Secondarycolor;
+        border: $Secondarycolor 5px solid;
+        border-radius: 1em;
+        padding: 0 1em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+}
+.submit {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;  
+    span {
+        color: $Secondarytextcolor;
+        font-size: 1.5em;
+        padding: 2em;
+    }
+}
 .instructions {
     display: flex;
     flex-direction: column;

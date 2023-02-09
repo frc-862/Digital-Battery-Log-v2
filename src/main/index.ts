@@ -2,6 +2,8 @@
 import { app, BrowserWindow, session, ipcMain } from 'electron';
 import path from 'path'
 import { config } from './store'
+import './IPC'
+import './db/db'
 const createWindow = () => {
   // Create the browser window.
   console.log(app.getPath("userData"))

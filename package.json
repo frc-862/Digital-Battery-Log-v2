@@ -27,6 +27,7 @@
   "dependencies": {
     "electron": "^22.0.3",
     "electron-store": "^8.1.0",
+    "mongoose": "^6.9.1",
     "sass": "^1.57.1"
   },
   "devDependencies": {
