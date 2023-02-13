@@ -19,6 +19,6 @@
         align-items: center;
         width: 10%;
         height: 100%;
-        color: white
+        color: var(--secondaryColor);
     }
 </style>

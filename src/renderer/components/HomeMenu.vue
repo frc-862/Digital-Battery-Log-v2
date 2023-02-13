@@ -24,7 +24,7 @@
 }
 
 .home-menu-button {
-    background-color: $Secondarycolor;
+    background-color: var(--secondaryColor);
     position: relative;
     width: 25%;
     height: 75%;
@@ -34,9 +34,9 @@
     align-content: center;
     justify-content: center;
     justify-items: center;
-    border: 5px solid $Tertiarycolor;
+    border: 5px solid var(--tertiaryColor);
     text-decoration: none;
-    color: $Textcolor;
+    color: var(--textColor);
 
     p {
         font-size: 4rem;

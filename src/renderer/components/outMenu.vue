@@ -97,7 +97,7 @@
             </div>
         </div>
         <div class="submitted" v-show="submitted == true">
-            <p style="color: white">Submitted</p>
+            <p>{{signOutMessage}}</p>
             </div>
         <div class="footer">
             <nuxtLink to="/" v-show="progression == 0"><i class="fa-solid fa-left-long fa-3x"></i></nuxtLink>
@@ -126,10 +126,16 @@ let rint: Ref<string> = ref("");
 let warn: Ref<boolean> = ref(false);
 let warnReason: Ref<string> = ref("");
 let submitted: Ref<boolean> = ref(false);
+let signOutMessage: Ref<string> = ref("");
 
-function submit() {
-    signOut(battery.value, soc.value, rint.value);
+async function submit() {
     submitted.value = true;
+    const success: boolean = await signOut(battery.value, soc.value, rint.value);
+    if (success) {
+        signOutMessage.value = "Successfully signed out!";
+    } else {
+        signOutMessage.value = "Failed to sign out!";
+    }
     setTimeout(() => {
         navigateTo("/")
     }, 3000)
@@ -252,6 +258,18 @@ function checkRange() {
 }
 </script>
 <style lang="scss">
+.submitted {
+    p {
+        color: var(--secondayTextColor);
+        font-size: 1.5em;
+        padding: 2em;
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+}
 .submit-buttons {
     display: flex;
     flex-direction: row;
@@ -262,8 +280,8 @@ function checkRange() {
     .submit-button {
         width: 100px;
         height: 100px;
-        color: $Secondarycolor;
-        border: $Secondarycolor 5px solid;
+        color: var(--secondaryColor);
+        border: var(--secondaryColor) 5px solid;
         border-radius: 1em;
         padding: 0 1em;
         display: flex;
@@ -279,7 +297,7 @@ function checkRange() {
     align-items: center;
     justify-items: center;  
     span {
-        color: $Secondarytextcolor;
+        color: var(--secondaryTextColor);
         font-size: 1.5em;
         padding: 2em;
     }
@@ -291,25 +309,25 @@ function checkRange() {
     align-items: center;
     width: 100%;
     height: 10%;
-    color: $Secondarytextcolor;
+    color: var(--secondaryTextColor);
     font-size: 1.5em;
     font-weight: bold;
 }
 
 .warningMessage {
-    color: $Warningcolor;
+    color: var(--warningColor);
     font-size: 1.5em;
     font-weight: bold;
 }
 
 .highlight {
-    border: 5px solid $Tertiarycolor;
+    border: 5px solid var(--tertiaryColor);
     border-radius: 1.5em;
     padding: 0.5em;
 }
 
 .warn {
-    border: 5px solid $Warningcolor;
+    border: 5px solid var(--warningColor);
 }
 
 .footer {
@@ -322,7 +340,7 @@ function checkRange() {
     color: white;
 
     &>* {
-        color: $Secondarytextcolor;
+        color: var(--secondaryTextColor);
     }
 }
 
@@ -333,7 +351,7 @@ function checkRange() {
     align-items: center;
     width: 100%;
     height: 100%;
-    border-top: 5px solid $Secondarycolor;
+    border-top: 5px solid var(--secondaryColor);
 }
 
 .batteryNum,
@@ -346,7 +364,7 @@ function checkRange() {
         font-size: 2rem;
         padding: 0;
         margin: 0;
-        color: $Secondarytextcolor
+        color: var(--secondaryTextColor)
     }
 }
 
@@ -358,7 +376,7 @@ function checkRange() {
     justify-items: center;
     height: 90%;
     width: 35%;
-    border: 5px solid $Secondarycolor;
+    border: 5px solid var(--secondaryColor);
     border-radius: 2em;
     padding: 0 2%;
 }
@@ -398,7 +416,7 @@ function checkRange() {
 .key {
     height: 100%;
     width: 100%;
-    background-color: $Secondarycolor;
+    background-color: var(--secondaryColor);
     border-radius: 25px;
     display: flex;
     flex-direction: row;
@@ -415,16 +433,16 @@ function checkRange() {
         font-size: 3rem;
         padding: 0;
         margin: 0;
-        color: $Textcolor;
+        color: var(--textColor);
     }
 
     i {
         font-size: 2rem;
-        color: $Textcolor;
+        color: var(--textColor);
     }
 
     .back {
-        color: $Textcolor;
+        color: var(--textColor);
     }
 }
 </style>

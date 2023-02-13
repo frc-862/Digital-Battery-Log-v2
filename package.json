@@ -25,12 +25,17 @@
   },
   "homepage": "https://github.com/Mikecerc/Electron-Battery-Logger#readme",
   "dependencies": {
+    "@pinia/nuxt": "^0.4.6",
     "electron": "^22.0.3",
     "electron-store": "^8.1.0",
     "mongoose": "^6.9.1",
+    "pinia": "^2.0.30",
     "sass": "^1.57.1"
   },
   "devDependencies": {
     "nuxt": "^3.0.0"
+  },
+  "overrides": {
+    "vue": "3.2.47"
   }
 }

@@ -14,7 +14,7 @@
     position: fixed;
     width: 100%;
     height: 100%;
-    background-color: $Primarycolor;
+    background-color: var(--primaryColor);
     display: flex; 
     flex-direction: column;
     justify-content: center;

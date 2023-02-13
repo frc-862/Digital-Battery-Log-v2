@@ -1,18 +1,19 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { batteryData } from './types';
+import { BatteryData } from './types';
+import { Config } from './types';
 contextBridge.exposeInMainWorld('electronAPI', {
   /*
   sendMessage: (message: string) => ipcRenderer.send('send-message', message),
   */
   config: {
-    get(key: string) {
-      return ipcRenderer.sendSync('config-get', key);
+    get(): Promise<Config | boolean> {
+      return ipcRenderer.invoke('config-get');
     },
-    set(property: string, val: string) {
-      return ipcRenderer.send('config-set', property, val);
+    set(property: string, val: string): Promise<boolean> {
+      return ipcRenderer.invoke('config-set', property, val);
     },
   },
-  logOut(data: batteryData) {
-    return ipcRenderer.send('log-out', data);
+  logOut(data: BatteryData): Promise<boolean> {
+    return ipcRenderer.invoke('log-out', data);
   },
 });

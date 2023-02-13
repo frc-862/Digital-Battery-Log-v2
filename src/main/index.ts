@@ -2,7 +2,7 @@
 import { app, BrowserWindow, session, ipcMain } from 'electron';
 import path from 'path'
 import { config } from './store'
-import './IPC'
+import { ipc } from './IPC'
 import './db/db'
 const createWindow = () => {
   // Create the browser window.
@@ -42,6 +42,7 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  ipc();
   createWindow()
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({

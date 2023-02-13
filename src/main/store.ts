@@ -1,25 +1,22 @@
 import Store from 'electron-store';
-
-type config = {
-  pitcartMode: boolean
-  localPort: number
-  database: {
-    address: string
-    port: number
-  }
-  externalAPIRoot: string
-  sheetsAPIRoot: string
-  kioskMode: boolean
-}
+import { Config } from './types';
 const defaults = {
   pitcartMode: true,
-    localPort: 8080,
-    database: {
-        address: "",
-        port: 27017
-    },
-    externalAPIRoot: "",
-    sheetsAPIRoot: "",
-    kioskMode: true
+  localPort: 8080,
+  database: {
+    address: "",
+    port: 27017
+  },
+  externalAPIRoot: "",
+  sheetsAPIRoot: "",
+  kioskMode: true,
+  colors: {
+    primary: "#000044",
+    secondary: "#ffffff",
+    tertiary: "#807878",
+    warning: "#c26d22",
+    primaryText: "#000000",
+    secondaryText: "#ffffff"
+  }
 }
-export let config = new Store<config>({ defaults: defaults });
+export let config = new Store<Config>({ defaults: defaults });

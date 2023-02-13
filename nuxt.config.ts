@@ -4,7 +4,7 @@ export default defineNuxtConfig({
         css: {
             preprocessorOptions: {
                 scss: {
-                    additionalData: '@use "@/assets/scss/_mixins.scss" as *; @use "@/assets/scss/_variables.scss" as *; @use "@/assets/scss/_global.scss" as *;'
+                    additionalData: '@use "@/assets/scss/_variables.scss" as *; @use "@/assets/scss/_global.scss" as *;'
                 }
             }
         },
@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     },
     srcDir: "src/renderer",
     ssr: false,
-    typescript: {
-    }
+    modules: [
+        '@pinia/nuxt',
+    ],
 })

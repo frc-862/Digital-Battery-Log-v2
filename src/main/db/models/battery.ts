@@ -1,13 +1,16 @@
 import { Schema, model } from 'mongoose';
 
-const batterySchema = new Schema({
+const batteryRecordSchema = new Schema({
     number: String,
     soc: String,
     rint: String,
     time: String,
-    out: Boolean,
+    out: Boolean, //out or in
 });
-const schema = new Schema({
-    batteries: [batterySchema],
-});
-export const batteryModel = model("batteries", schema);
+const batterySchema = new Schema({
+    battery: String,
+    records: [batteryRecordSchema],
+})
+
+export const battery = model("battery", batterySchema);
+export const batteryRecord = model("batteryRecord", batteryRecordSchema);

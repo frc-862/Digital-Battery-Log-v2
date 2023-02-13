@@ -7,8 +7,8 @@
 </template>
 <style lang="scss">
 img {
-    color: white;
-    fill: white
+    color: var(--secondaryColor);
+    fill: var(--secondaryColor);
 }
 
 .nav-container {
@@ -27,7 +27,7 @@ img {
     }
 
     & > * {
-        color: $Secondarycolor;
+        color: var(--secondaryColor);
     }
 
     padding: 2rem 10rem;

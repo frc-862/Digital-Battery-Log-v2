@@ -1,6 +1,14 @@
 $Primarycolor: #000044;
 $Secondarycolor: #ffffff;
 $Tertiarycolor: #807878;
-$Warningcolor:rgb(212, 110, 27) ;
+$Warningcolor:rgb(212, 110, 27);
 $Textcolor: #000000;
 $Secondarytextcolor: #ffffff;
+:root {
+    --primaryColor: #000044;
+    --secondaryColor: #ffffff;
+    --tertiaryColor: #807878;
+    --warningColor: #c26d22;
+    --textColor:  #000000;
+    --secondaryTextColor:  #ffffff;
+}
