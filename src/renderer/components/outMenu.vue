@@ -40,7 +40,7 @@
                     </p>
                 </div>
             </div>
-            <div class="keyboard" v-show="progression <=2">
+            <div class="keyboard" v-show="progression <= 2">
                 <div class="column">
                     <div class="key" @click="log(1)">
                         <p>1</p>
@@ -86,7 +86,7 @@
             </div>
             <div class=submit v-show="progression > 2">
                 <span>Are you sure you want to submit?</span>
-                <div class= "submit-buttons">
+                <div class="submit-buttons">
                     <div class="submit-button" @click="submit()">
                         <p><i class="fa-solid fa-check fa-5x"></i></p>
                     </div>
@@ -97,8 +97,8 @@
             </div>
         </div>
         <div class="submitted" v-show="submitted == true">
-            <p class="signed-out-message">{{signOutMessage}}</p>
-            </div>
+            <p class="signed-out-message">{{ signOutMessage }}</p>
+        </div>
         <div class="footer">
             <nuxtLink to="/" v-show="progression == 0"><i class="fa-solid fa-left-long fa-3x"></i></nuxtLink>
             <i v-show="progression != 0" @click="back()" class="fa-solid fa-left-long fa-3x"></i>
@@ -115,7 +115,7 @@ const batteryRange = {
 }
 const socRange: number[] = [0, 130];
 const rintRange: number[] = [0, 999];
-const socLength: number[] = [1,3];
+const socLength: number[] = [1, 3];
 const rintLength: number = 3;
 
 let str: Ref<string> = ref("");
@@ -258,23 +258,20 @@ function checkRange() {
 }
 </script>
 <style lang="scss">
-.signed-out-message {
-    color: var(--secondaryTextColor);
-    font-size: 1.5em;
-    padding: 2em;
-}
 .submitted {
-    p {
-        color: var(--secondayTextColor);
+    .signed-out-message {
+        color: var(--secondaryTextColor);
         font-size: 1.5em;
         padding: 2em;
     }
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     justify-items: center;
 }
+
 .submit-buttons {
     display: flex;
     flex-direction: row;
@@ -282,6 +279,7 @@ function checkRange() {
     align-items: center;
     justify-items: center;
     gap: 20%;
+
     .submit-button {
         width: 100px;
         height: 100px;
@@ -295,18 +293,21 @@ function checkRange() {
     }
 
 }
+
 .submit {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    justify-items: center;  
+    justify-items: center;
+
     span {
         color: var(--secondaryTextColor);
         font-size: 1.5em;
         padding: 2em;
     }
 }
+
 .instructions {
     display: flex;
     flex-direction: column;

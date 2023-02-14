@@ -15,7 +15,7 @@ const createWindow = () => {
       nodeIntegration: false,
       contextIsolation: true,
     },
-    kiosk: config.get('kioskMode'),
+    kiosk: !app.commandLine.hasSwitch("dev"),
     frame: false,
 
   })

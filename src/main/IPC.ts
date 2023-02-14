@@ -17,6 +17,7 @@ export const ipc = () => {
             config.set(key, val);
             return true;
         } catch (error) {
+            console.log(error)
             return false
         }
     });
