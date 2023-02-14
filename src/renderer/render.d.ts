@@ -5,17 +5,30 @@ export interface IElectronAPI {
     set: (key: string, val: string) => Promise<void>;
   }
   logOut: (data: batteryData) => Promise<boolean>;
+  logs: {
+    getAll: (historyLength: number) => Promise<Log[]>;
+    getByBattery: (battery: string, historyLength: number) => Promise<Log[]>;
+  }
 }
 export declare global {
   interface Window {
     electronAPI: IElectronAPI
   }
 }
-export interface batteryData {
+export interface Log {
   battery: string;
   soc: string;
   rint: string;
   time: string;
+  timeEpoch: number;
+  out: boolean;
+}
+export interface batteryData {
+  battery: string;
+  soc: string;
+  rint: string;
+  time: Date;
+  timeEpoch: number;
 }
 export interface Colors {
   primary: string;

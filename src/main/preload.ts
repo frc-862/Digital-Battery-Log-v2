@@ -16,4 +16,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   logOut(data: BatteryData): Promise<boolean> {
     return ipcRenderer.invoke('log-out', data);
   },
+  logs: {
+    getAll(historyLength: number): Promise<BatteryData[] | boolean> {
+      return ipcRenderer.invoke('logs-getAll', historyLength);
+    }
+  }
 });

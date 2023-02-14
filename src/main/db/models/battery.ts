@@ -5,12 +5,7 @@ const batteryRecordSchema = new Schema({
     soc: String,
     rint: String,
     time: String,
+    timeEpoch: Number,
     out: Boolean, //out or in
 });
-const batterySchema = new Schema({
-    battery: String,
-    records: [batteryRecordSchema],
-})
-
-export const battery = model("battery", batterySchema);
 export const batteryRecord = model("batteryRecord", batteryRecordSchema);

@@ -3,20 +3,18 @@ export interface BatteryData {
     battery: string;
     soc: string;
     rint: string;
-    time: string;
+    time: Date;
+    timeEpoch: number;
+    out: boolean;
   }
 export interface BatteryRecord {
     number: string;
     soc: string;
     rint: string;
-    time: string;
+    time: Date;
+    timeEpoch: number;
     out: boolean;
   }
-export interface Battery {
-    battery: string;
-    records: BatteryRecord[];
-  }
-export interface BatteryDocument extends Battery, Document {};
 export interface BatteryRecordDocument extends BatteryRecord, Document {};
 
 export interface Config {

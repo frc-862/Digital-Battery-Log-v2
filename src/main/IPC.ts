@@ -1,5 +1,6 @@
 import { config } from './store'
 import { ipcMain } from 'electron';
+import { getAllLogs } from './db/getLogs';
 import { logOut } from './db/logOut';
 import { BatteryData, Config } from './types';
 export const ipc = () => {
@@ -22,5 +23,9 @@ export const ipc = () => {
     ipcMain.handle('log-out', async (event, data: BatteryData) => {
         const success: boolean = await logOut(data);
         return success;
+    });
+    ipcMain.handle('logs-getAll', async (event, historyLength: number) => {
+        const logs = await getAllLogs(historyLength);
+        return logs;
     });
 }

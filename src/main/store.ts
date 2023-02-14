@@ -9,7 +9,7 @@ const defaults = {
   },
   externalAPIRoot: "",
   sheetsAPIRoot: "",
-  kioskMode: true,
+  kioskMode: false,
   colors: {
     primary: "#000044",
     secondary: "#ffffff",

@@ -97,7 +97,7 @@
             </div>
         </div>
         <div class="submitted" v-show="submitted == true">
-            <p>{{signOutMessage}}</p>
+            <p class="signed-out-message">{{signOutMessage}}</p>
             </div>
         <div class="footer">
             <nuxtLink to="/" v-show="progression == 0"><i class="fa-solid fa-left-long fa-3x"></i></nuxtLink>
@@ -258,6 +258,11 @@ function checkRange() {
 }
 </script>
 <style lang="scss">
+.signed-out-message {
+    color: var(--secondaryTextColor);
+    font-size: 1.5em;
+    padding: 2em;
+}
 .submitted {
     p {
         color: var(--secondayTextColor);

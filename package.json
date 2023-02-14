@@ -12,7 +12,8 @@
     "nuxtDev": "nuxt dev",
     "generate": "nuxi generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "clearDb": "tsc -p ./src/main/tsconfig.json && node ./dist/main/scripts/clearDB.js"
   },
   "repository": {
     "type": "git",
