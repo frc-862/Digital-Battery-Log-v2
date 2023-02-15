@@ -84,15 +84,26 @@
                     </div>
                 </div>
             </div>
-            <div class=submit v-show="progression > 2">
+            <div class=submit v-show="progression == 3">
                 <span>Are you sure you want to submit?</span>
                 <div class="submit-buttons">
-                    <div class="submit-button" @click="submit()">
+                    <div class="submit-button" @click="submitButton()">
                         <p><i class="fa-solid fa-check fa-5x"></i></p>
                     </div>
                     <div class="submit-button" @click="back()">
                         <p><i class="fa-solid fa-times fa-5x"></i></p>
                     </div>
+                </div>
+            </div>
+            <div class="submit-warning" v-show="submitWarn == true">
+                <i class="fa-solid fa-triangle-exclamation fa-2x"></i>
+                <p class="submit-warning-message">Warning: Battery {{ battery.slice(0, 2) }}.{{ battery.slice(2, 4) }}
+                    is
+                    already signed out!</p>
+                <p class="submit-warning-message">Are you sure you want to proceed?</p>
+                <div class="submit-warning-buttons">
+                    <div class="submit-warning-button" @click="submit()">Submit</div>
+                    <nuxtLink to="/" class="submit-warning-button">Revert</nuxtLink>
                 </div>
             </div>
         </div>
@@ -118,6 +129,7 @@ const rintRange: number[] = [0, 999];
 const socLength: number[] = [1, 3];
 const rintLength: number = 3;
 
+
 let str: Ref<string> = ref("");
 let progression: Ref<number> = ref(0);
 let battery: Ref<string> = ref("");
@@ -127,14 +139,28 @@ let warn: Ref<boolean> = ref(false);
 let warnReason: Ref<string> = ref("");
 let submitted: Ref<boolean> = ref(false);
 let signOutMessage: Ref<string> = ref("");
+let submitWarn: Ref<boolean> = ref(false);
+let submitWarnMessage: Ref<string> = ref("");
 
+async function submitButton() {
+    progression.value++;
+    const isOut = await isSignedOut(battery.value);
+    if (isOut == true) {
+        submitWarn.value = true;
+        submitWarnMessage.value = `Warning: Battery ${battery.value} is already signed out! Are you sure you want to proceed?`;
+        return;
+    } else {
+        submit();
+    }
+}
 async function submit() {
+    submitWarn.value = false;
     submitted.value = true;
     const success: boolean = await signOut(battery.value, soc.value, rint.value);
     if (success) {
-        signOutMessage.value = "Successfully signed out!";
+        signOutMessage.value = "Successfully signed Out!";
     } else {
-        signOutMessage.value = "Failed to sign out!";
+        signOutMessage.value = "Failed to sign Out!";
     }
     setTimeout(() => {
         navigateTo("/")
@@ -256,8 +282,53 @@ function checkRange() {
             return true;
     }
 }
+async function isSignedOut(batteryNumber: string): Promise<boolean> {
+    const latestLog = await getLatest(batteryNumber);
+    if (typeof latestLog != 'boolean') {
+        if (latestLog == null) {
+            return false;
+        } else {
+            return latestLog.out;
+        }
+    } else {
+        return true;
+    }
+}
 </script>
 <style lang="scss">
+.submit-warning {
+    .submit-warning-message, i{
+        color: var(--warningColor);
+        font-size: 1.5em;
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    .submit-warning-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        justify-items: center;
+        gap: 20%;
+
+        .submit-warning-button {
+            text-decoration: none;
+            width: 100px;
+            height: 100px;
+            color: var(--secondaryTextColor);
+            border: var(--secondaryColor) 5px solid;
+            border-radius: 1em;
+            padding: 0 1em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    }
+}
 .submitted {
     .signed-out-message {
         color: var(--secondaryTextColor);
