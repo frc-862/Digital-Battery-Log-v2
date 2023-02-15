@@ -1,5 +1,6 @@
-import { BatteryRecord } from "../types";
 import { batteryRecord } from "./models/battery";
+import { BatteryRecord } from "../types";
+
 export default async (data: BatteryRecord): Promise<boolean> => {
     try {
         const newBattery = new batteryRecord({
@@ -8,7 +9,7 @@ export default async (data: BatteryRecord): Promise<boolean> => {
             rint: data.rint,
             time: data.time,
             timeEpoch: data.timeEpoch,
-            out: true,
+            out: false,
         });
         await newBattery.save();
         return true;
@@ -16,4 +17,4 @@ export default async (data: BatteryRecord): Promise<boolean> => {
         console.log(error);
         return false;
     }
-};
+}

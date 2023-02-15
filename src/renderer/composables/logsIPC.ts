@@ -9,3 +9,12 @@ export async function getAllLogs(): Promise<Log[] | boolean> {
         return false;
     }
 }
+export const getLatest = async (battery: string): Promise<Log | boolean> => {
+    try {
+        const latest = await window.electronAPI.logs.getLatest(battery);
+        return latest;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}

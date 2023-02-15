@@ -11,7 +11,7 @@
         </div>
         <div class="logs-container">
             <div class="log" v-for="log in logs">
-                <p style="color:white; font-size: large;">{{ log.battery.slice(0, 2) }}.{{ log.battery.slice(2, 4) }}
+                <p style="color:white; font-size: large;">{{ log.number.slice(0, 2) }}.{{ log.number.slice(2, 4) }}
                 </p>
                 <p style="color:white; font-size: large;">{{ log.soc }}%</p>
                 <p style="color:white; font-size: large;">0.{{ log.rint }}&#937;</p>

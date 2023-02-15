@@ -1,11 +1,12 @@
 import '../db/db';
-import { BatteryRecordDocument } from '../types';
+import { BatteryRecord } from '../types';
 import { batteryRecord } from '../db/models/battery';
+import { HydratedDocument } from 'mongoose';
 
 const clearDB = async () => {
     try {
-        const logs: BatteryRecordDocument[] = await batteryRecord.find();
-        logs.forEach((log: BatteryRecordDocument) => {
+        const logs: HydratedDocument<BatteryRecord>[] = await batteryRecord.find();
+        logs.forEach((log: HydratedDocument<BatteryRecord>) => {
             log.remove();
         });
         console.log('DB cleared');

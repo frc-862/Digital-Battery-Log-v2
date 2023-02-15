@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { BatteryData } from './types';
+import { BatteryRecord } from './types';
 import { Config } from './types';
 contextBridge.exposeInMainWorld('electronAPI', {
   /*
@@ -13,12 +13,18 @@ contextBridge.exposeInMainWorld('electronAPI', {
       return ipcRenderer.invoke('config-set', property, val);
     },
   },
-  logOut(data: BatteryData): Promise<boolean> {
+  logOut(data: BatteryRecord): Promise<boolean> {
     return ipcRenderer.invoke('log-out', data);
   },
+  logIn(data: BatteryRecord): Promise<boolean> {
+    return ipcRenderer.invoke('log-in', data);
+  },
   logs: {
-    getAll(historyLength: number): Promise<BatteryData[] | boolean> {
+    getAll(historyLength: number): Promise<BatteryRecord[] | boolean> {
       return ipcRenderer.invoke('logs-getAll', historyLength);
+    },
+    getLatest(battery: string): Promise<BatteryRecord | boolean> {
+      return ipcRenderer.invoke('logs-getLatest', battery);
     }
   }
 });
