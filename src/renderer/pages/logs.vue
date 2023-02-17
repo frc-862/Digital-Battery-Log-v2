@@ -1,14 +1,13 @@
 <template>
-    <div class="page-container">
-        <NuxtLayout>
-            <logsMenu />
-        </NuxtLayout>
-    </div>
+  <div class="page-container">
+    <NuxtLayout>
+      <logsMenu />
+    </NuxtLayout>
+  </div>
 </template>
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 <style lang="scss">
-.page-container {
+  .page-container {
     padding: 0;
     margin: 0;
     top: 0;
@@ -21,5 +20,5 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-</style> 
+  }
+</style>

@@ -34,7 +34,8 @@
     "sass": "^1.57.1"
   },
   "devDependencies": {
-    "nuxt": "^3.0.0"
+    "nuxt": "^3.0.0",
+    "prettier": "2.8.4"
   },
   "overrides": {
     "vue": "3.2.47"
