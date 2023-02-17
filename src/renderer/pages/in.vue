@@ -1,12 +1,12 @@
 <template>
-    <div class="page-container">
-        <NuxtLayout>
-            <inMenu />
-        </NuxtLayout>
-    </div>
+  <div class="page-container">
+    <NuxtLayout>
+      <inMenu />
+    </NuxtLayout>
+  </div>
 </template>
 <style lang="scss">
-.page-container {
+  .page-container {
     padding: 0;
     margin: 0;
     top: 0;
@@ -15,9 +15,9 @@
     width: 100%;
     height: 100%;
     background-color: var(--primaryColor);
-    display: flex; 
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-</style> 
+  }
+</style>

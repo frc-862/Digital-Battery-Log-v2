@@ -1,15 +1,15 @@
 <template>
-    <div class="page-container">
-        <nav class="nav">
-            <Nav />
-        </nav>
-        <div class="page">
-            <slot />
-        </div>
+  <div class="page-container">
+    <nav class="nav">
+      <Nav />
+    </nav>
+    <div class="page">
+      <slot />
     </div>
+  </div>
 </template>
 <style lang="scss">
-.page-container {
+  .page-container {
     padding: 0;
     margin: 0;
     top: 0;
@@ -22,16 +22,15 @@
     justify-items: center;
     justify-content: center;
     align-items: center;
-}
+  }
 
-.nav {
+  .nav {
     width: 100%;
     height: 20%;
-}
+  }
 
-.page {
+  .page {
     width: 100%;
     height: 80%;
-}
-
+  }
 </style>

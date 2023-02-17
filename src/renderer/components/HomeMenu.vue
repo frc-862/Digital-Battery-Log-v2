@@ -1,18 +1,18 @@
 <template>
-    <div class="home-menu-container">
-        <NuxtLink to="/out" class="home-menu-button">
-            <p>Sign Out</p>
-        </NuxtLink>
-        <NuxtLink to="/in" class="home-menu-button">
-            <p>Sign In</p>
-        </NuxtLink>
-        <NuxtLink to="/logs" class="home-menu-button">
-            <p>Logs</p>
-        </NuxtLink>
-    </div>
+  <div class="home-menu-container">
+    <NuxtLink to="/out" class="home-menu-button">
+      <p>Sign Out</p>
+    </NuxtLink>
+    <NuxtLink to="/in" class="home-menu-button">
+      <p>Sign In</p>
+    </NuxtLink>
+    <NuxtLink to="/logs" class="home-menu-button">
+      <p>Logs</p>
+    </NuxtLink>
+  </div>
 </template>
 <style lang="scss">
-.home-menu-container {
+  .home-menu-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -21,9 +21,9 @@
     height: 100%;
     width: 100%;
     gap: 5%;
-}
+  }
 
-.home-menu-button {
+  .home-menu-button {
     background-color: var(--secondaryColor);
     position: relative;
     width: 25%;
@@ -39,12 +39,12 @@
     color: var(--textColor);
 
     p {
-        font-size: 4rem;
-        font-weight: 600;
+      font-size: 4rem;
+      font-weight: 600;
     }
 
     &:hover {
-       background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+      background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
     }
-}
+  }
 </style>
