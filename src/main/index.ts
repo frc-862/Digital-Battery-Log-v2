@@ -29,11 +29,17 @@ const createWindow = () => {
     //mainWindow.webContents.openDevTools()
   } else {
     // and load the index.html of the app.
-    mainWindow.loadFile("../../.output/public/index.html");
-    //mainWindow.loadFile("./src/renderer/dist/index.html")
+    //mainWindow.loadFile("../../.output/public/index.html");
+    mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
 
     // Open the DevTools.
   }
+  mainWindow.webContents.on("did-fail-load", () => {
+    console.log("did-fail-load");
+    //mainWindow.loadFile("../../.output/public/index.html");
+    mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
+    // REDIRECT TO FIRST WEBPAGE AGAIN
+  });
 };
 
 // This method will be called when Electron has finished

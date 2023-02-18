@@ -39,7 +39,6 @@
   } else {
     console.log("there was an error", data);
   }
-  console.log(logs.value);
 </script>
 <style lang="scss">
   .container {
