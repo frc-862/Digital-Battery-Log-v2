@@ -1,14 +1,16 @@
 {
   "name": "electron-battery-logger",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "A digital battery logger for FRC",
+  "main": "./dist/main/index.js",
   "type": "commonjs",
   "scripts": {
     "startElectron": "electron ./dist/main/index.js",
     "dev": "tsc -p ./src/main/tsconfig.json && node ./dist/main/scripts/devServer.js",
     "startElectronDev": "electron ./dist/main/index.js --dev",
-    "build": "tsc",
+    "build:linux": "electron-builder -l",
+    "build:win": "electron-builder -w",
+    "pack": "electron-builder --dir",
     "nuxtDev": "nuxt dev",
     "generate": "nuxi generate",
     "preview": "nuxt preview",
@@ -26,18 +28,30 @@
   },
   "homepage": "https://github.com/Mikecerc/Electron-Battery-Logger#readme",
   "dependencies": {
-    "@pinia/nuxt": "^0.4.6",
-    "electron": "^22.0.3",
     "electron-store": "^8.1.0",
-    "mongoose": "^6.9.1",
-    "pinia": "^2.0.30",
-    "sass": "^1.57.1"
+    "mongoose": "^6.9.1"
   },
   "devDependencies": {
+    "electron": "^22.0.3",
+    "@pinia/nuxt": "^0.4.6",
+    "pinia": "^2.0.30",
+    "sass": "^1.57.1",
+    "electron-builder": "^24.0.0-alpha.12",
     "nuxt": "^3.0.0",
     "prettier": "2.8.4"
   },
   "overrides": {
     "vue": "3.2.47"
+  },
+  "build": {
+    "appId": "com.mikecerc.electron-battery-logger",
+    "productName": "Digital Battery Logger",
+    "directories": {
+      "output": "build"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   }
 }
