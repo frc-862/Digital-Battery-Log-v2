@@ -7,6 +7,7 @@
   "scripts": {
     "startElectron": "electron ./dist/main/index.js",
     "dev": "tsc -p ./src/main/tsconfig.json && node ./dist/main/scripts/devServer.js",
+    "compile": "tsc -p ./src/main/tsconfig.json",
     "startElectronDev": "electron ./dist/main/index.js --dev",
     "build:linux": "electron-builder -l",
     "build:win": "electron-builder -w",
