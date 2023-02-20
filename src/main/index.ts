@@ -1,8 +1,8 @@
 // Modules to control application life and create native browser window
 import { app, BrowserWindow, session, ipcMain } from "electron";
-import path from "path";
-import { config } from "./store";
+import "./store";
 import { ipc } from "./IPC";
+import path from "path"
 import "./db/db";
 const createWindow = () => {
   // Create the browser window.
@@ -11,7 +11,7 @@ const createWindow = () => {
     width: 1200,
     height: 700,
     webPreferences: {
-      preload: path.join(__dirname, "./preload.js"),
+      preload: path.join(__dirname, "preload.js"),
       nodeIntegration: false,
       contextIsolation: true,
     },
@@ -29,14 +29,14 @@ const createWindow = () => {
     //mainWindow.webContents.openDevTools()
   } else {
     // and load the index.html of the app.
-    //mainWindow.loadFile("../../.output/public/index.html");
-    mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
+   // mainWindow.loadFile("../../.output/public/index.html");
+   mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
 
     // Open the DevTools.
   }
   mainWindow.webContents.on("did-fail-load", () => {
     console.log("did-fail-load");
-    //mainWindow.loadFile("../../.output/public/index.html");
+   // mainWindow.loadFile("../../.output/public/index.html");
     mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
     // REDIRECT TO FIRST WEBPAGE AGAIN
   });
