@@ -8,7 +8,7 @@
     "startElectron": "electron ./dist/main/index.js",
     "dev": "tsc -p ./src/main/tsconfig.json && node ./dist/main/scripts/devServer.js",
     "startElectronDev": "electron ./dist/main/index.js --dev",
-    "build": "tsc",
+    "compile": "tsc -p ./src/main/tsconfig.json",
     "nuxtDev": "nuxt dev",
     "generate": "nuxi generate",
     "preview": "nuxt preview",

@@ -129,6 +129,7 @@
           class="fa-solid fa-left-long fa-3x"></i>
       </div>
     </div>
+    <div class="settingsIsland api-island" v-show="page == 'api'"></div>
   </div>
 </template>
 <script setup lang="ts">
@@ -450,37 +451,13 @@
     }
   }
 
-  .c1 {
-    background-color: var(--primaryColor);
-  }
-
-  .c2 {
-    background-color: var(--secondaryColor);
-  }
-
-  .c3 {
-    background-color: var(--tertiaryColor);
-  }
-
-  .c4 {
-    background-color: var(--warningColor);
-  }
-
-  .c5 {
-    background-color: var(--textColor);
-  }
-
-  .c6 {
-    background-color: var(--secondaryTextColor);
-  }
-
   .footer {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 10%;
+    height: 5%;
     color: white;
 
     & > * {
@@ -501,23 +478,22 @@
       color: var(--secondaryTextColor);
       padding-bottom: 1%;
     }
-  }
-
-  .settingsIsland {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 60%;
-    height: 100%;
-    border: 5px solid var(--secondaryColor);
-    border-radius: 25px;
-    gap: 5%;
-    margin-bottom: 5%;
-  }
-
-  .color-island {
-    gap: 2%;
+    .settingsIsland {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 60%;
+      height: 100%;
+      border: 5px solid var(--secondaryColor);
+      border-radius: 25px;
+      gap: 5%;
+      margin-bottom: 5%;
+    }
+    .color-island {
+      gap: 2%;
+      padding-top: 1%;
+    }
   }
 
   .setting {
@@ -540,7 +516,7 @@
       height: 100%;
 
       p {
-        font-size: 2rem;
+        font-size: 1.5rem;
         color: var(--secondaryTextColor);
       }
     }
@@ -581,6 +557,29 @@
         width: 20%;
         height: 100%;
         border: 5px solid rgb(227, 212, 212);
+      }
+      .c1 {
+        background-color: var(--primaryColor);
+      }
+
+      .c2 {
+        background-color: var(--secondaryColor);
+      }
+
+      .c3 {
+        background-color: var(--tertiaryColor);
+      }
+
+      .c4 {
+        background-color: var(--warningColor);
+      }
+
+      .c5 {
+        background-color: var(--textColor);
+      }
+
+      .c6 {
+        background-color: var(--secondaryTextColor);
       }
     }
   }
