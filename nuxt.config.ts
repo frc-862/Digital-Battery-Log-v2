@@ -9,6 +9,9 @@ export default defineNuxtConfig({
         },
       },
     },
+    resolve: {
+      dedupe: ['vue-router']
+    }
   },
   app: {
     baseURL: "./",

@@ -1,14 +1,18 @@
 {
   "name": "electron-battery-logger",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "2.1.0",
+  "description": "A digital battery logger for FRC",
+  "main": "./dist/main/index.js",
   "type": "commonjs",
   "scripts": {
     "startElectron": "electron ./dist/main/index.js",
     "dev": "tsc -p ./src/main/tsconfig.json && node ./dist/main/scripts/devServer.js",
-    "startElectronDev": "electron ./dist/main/index.js --dev",
     "compile": "tsc -p ./src/main/tsconfig.json",
+    "startElectronDev": "electron ./dist/main/index.js --dev",
+    "preBuild": "tsc -p ./src/main/tsconfig.json && nuxi generate",
+    "build:linux": "electron-builder -l",
+    "build:win": "electron-builder -w",
+    "pack": "electron-builder --dir",
     "nuxtDev": "nuxt dev",
     "generate": "nuxi generate",
     "preview": "nuxt preview",
@@ -26,23 +30,46 @@
   },
   "homepage": "https://github.com/Mikecerc/Electron-Battery-Logger#readme",
   "dependencies": {
-    "@google-cloud/local-auth": "^2.1.0",
-    "@pinia/nuxt": "^0.4.6",
-    "axios": "^1.3.4",
-    "electron": "^22.0.3",
     "electron-store": "^8.1.0",
-    "googleapis": "^105.0.0",
     "mongoose": "^6.9.1",
+    "@google-cloud/local-auth": "^2.1.0",
+    "googleapis": "^105.0.0",
     "node-cron": "^3.0.2",
-    "pinia": "^2.0.30",
-    "sass": "^1.57.1"
+    "axios": "^1.3.4"
   },
   "devDependencies": {
+    "electron-builder": "^24.0.0-alpha.12",
+    "@pinia/nuxt": "^0.4.6",
+    "electron": "^22.0.3",
+    "pinia": "^2.0.30",
+    "sass": "^1.57.1",
     "@types/node-cron": "^3.0.7",
     "nuxt": "^3.0.0",
     "prettier": "2.8.4"
   },
   "overrides": {
     "vue": "3.2.47"
+  },
+  "build": {
+    "appId": "com.mikecerc.electron-battery-logger",
+    "productName": "Digital Battery Logger",
+    "directories": {
+      "output": "build"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "files": [
+      "package.json",
+      {
+        "from": "./dist/main",
+        "to": "./dist/main"
+      }, 
+      {
+        "from": "./.output/public",
+        "to": "./.output/public"
+      }
+    ]
   }
 }

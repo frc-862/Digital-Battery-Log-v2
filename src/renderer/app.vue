@@ -6,7 +6,6 @@
 <script setup lang="ts">
   import { Colors } from "./render";
   import { useConfigStore } from "./stores/configStore";
-  window.electronAPI.config.set("kioskMode", "false");
   const store = useConfigStore();
   await store.updateLocalConfig();
   const syncColors = () => {
