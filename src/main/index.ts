@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 import { app, BrowserWindow, session, ipcMain } from "electron";
-import "./store";
+import { config } from "./store";
+import { startSync } from "./api/periodicSync";
 import { ipc } from "./IPC";
 import path from "path"
 import "./db/db";
@@ -62,6 +63,8 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+  startSync();
+  app.getPath("userData");
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

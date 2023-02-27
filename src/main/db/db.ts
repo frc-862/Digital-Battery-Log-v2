@@ -3,9 +3,9 @@ const dbRoot: string = "mongodb://localhost";
 const dbName: string = "logs";
 const dbPort: string = "27017";
 const dbUrl: string = `${dbRoot}:${dbPort}/${dbName}`;
-try { 
-    mongoose.connect(dbUrl);
-    mongoose.set("strictQuery", true);
+try {
+  mongoose.set("strictQuery", true);
+  mongoose.connect(dbUrl);
 } catch (error) {
-    console.log(error);
+  console.error(error);
 }

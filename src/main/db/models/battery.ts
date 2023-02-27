@@ -7,7 +7,8 @@ const batteryRecordSchema = new Schema<BatteryRecord>({
   rint: String,
   time: String,
   timeEpoch: Number,
-  out: Boolean, //out or in
+  out: Boolean, //out or
+  updated: Boolean,
 });
 export const batteryRecord = model<BatteryRecord>(
   "batteryRecord",
