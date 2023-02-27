@@ -26,14 +26,19 @@
   },
   "homepage": "https://github.com/Mikecerc/Electron-Battery-Logger#readme",
   "dependencies": {
+    "@google-cloud/local-auth": "^2.1.0",
     "@pinia/nuxt": "^0.4.6",
+    "axios": "^1.3.4",
     "electron": "^22.0.3",
     "electron-store": "^8.1.0",
+    "googleapis": "^105.0.0",
     "mongoose": "^6.9.1",
+    "node-cron": "^3.0.2",
     "pinia": "^2.0.30",
     "sass": "^1.57.1"
   },
   "devDependencies": {
+    "@types/node-cron": "^3.0.7",
     "nuxt": "^3.0.0",
     "prettier": "2.8.4"
   },

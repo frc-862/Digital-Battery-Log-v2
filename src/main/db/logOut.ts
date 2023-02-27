@@ -9,6 +9,7 @@ export default async (data: BatteryRecord): Promise<boolean> => {
       time: data.time,
       timeEpoch: data.timeEpoch,
       out: true,
+      updated: false,
     });
     await newBattery.save();
     return true;

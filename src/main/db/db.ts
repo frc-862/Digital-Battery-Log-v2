@@ -7,5 +7,5 @@ try {
   mongoose.set("strictQuery", true);
   mongoose.connect(dbUrl);
 } catch (error) {
-  console.log(error);
+  console.error(error);
 }

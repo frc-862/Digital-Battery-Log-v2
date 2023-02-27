@@ -5,8 +5,8 @@ export interface BatteryRecord {
   time: Date;
   timeEpoch: number;
   out: boolean;
+  updated?: boolean;
 }
-
 export interface Config {
   pitcartMode: boolean;
   localPort: number;

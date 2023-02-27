@@ -2,6 +2,7 @@
 import { app, BrowserWindow, session, ipcMain } from "electron";
 import path from "path";
 import { config } from "./store";
+import { startSync } from "./api/periodicSync";
 import { ipc } from "./IPC";
 import "./db/db";
 const createWindow = () => {
@@ -62,6 +63,8 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+  startSync();
+  app.getPath("userData");
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
