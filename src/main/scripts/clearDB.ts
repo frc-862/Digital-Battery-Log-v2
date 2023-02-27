@@ -5,11 +5,9 @@ import { HydratedDocument } from "mongoose";
 
 const clearDB = async () => {
   try {
-    const logs: HydratedDocument<BatteryRecord>[] = await batteryRecord.find();
-    logs.forEach((log: HydratedDocument<BatteryRecord>) => {
-      log.remove();
-    });
-    console.log("DB cleared");
+    console.log("Clearing DB");
+    const res = await batteryRecord.deleteMany({});
+    console.log(`Deleted ${res.deletedCount} documents`);
     process.exit();
   } catch (error) {
     console.log(error);
