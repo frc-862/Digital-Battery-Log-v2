@@ -12,26 +12,26 @@
       </div>
       <div class="setting">
         <div class="label">
-          <p>Api</p>
+          <p>Logging</p>
         </div>
         <div class="interactable">
-          <p>do something</p>
+          <p>Open Menu</p>
         </div>
       </div>
       <div class="setting">
         <div class="label">
-          <p>Misc</p>
+          <p>API</p>
         </div>
         <div class="interactable">
-          <p>do something</p>
+          <p>Open Menu</p>
         </div>
       </div>
-      <div class="setting">
+      <div class="setting" v-if="isDev == true">
         <div class="label">
-          <p>Setting 4</p>
+          <p>Dev</p>
         </div>
         <div class="interactable">
-          <p>do something</p>
+          <p>Open Menu</p>
         </div>
       </div>
     </div>
@@ -135,11 +135,19 @@
 <script setup lang="ts">
   import { useConfigStore } from "../stores/configStore";
   import { Colors } from "../render";
+  import { Ref } from "vue";
+
   let colors: Colors = useConfigStore().getColors;
   let page = ref("home");
   let color = ref(0);
   let colorName = ref("");
   let hex = ref("#000000");
+
+  const checkDev = async (): Promise<boolean> => {
+    return await window.electronAPI.isDev();
+  };
+  const isDev: Ref<boolean> = ref(await checkDev());
+
   const back = () => {
     if (page.value == "colors") {
       page.value = "home";

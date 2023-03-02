@@ -1,6 +1,6 @@
-import { BatteryRecord } from "../types";
+import { iBatteryRecord } from "../types";
 import { batteryRecord } from "./models/battery";
-export default async (data: BatteryRecord): Promise<boolean> => {
+export default async (data: iBatteryRecord): Promise<boolean> => {
   try {
     const newBattery = new batteryRecord({
       number: data.number,

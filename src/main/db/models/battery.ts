@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
-import { BatteryRecord } from "../../types";
+import { iBatteryRecord } from "../../types";
 
-const batteryRecordSchema = new Schema<BatteryRecord>({
+const batteryRecordSchema = new Schema<iBatteryRecord>({
   number: String,
   soc: String,
   rint: String,
@@ -10,7 +10,7 @@ const batteryRecordSchema = new Schema<BatteryRecord>({
   out: Boolean, //out or
   updated: Boolean,
 });
-export const batteryRecord = model<BatteryRecord>(
+export const batteryRecord = model<iBatteryRecord>(
   "batteryRecord",
   batteryRecordSchema,
 );

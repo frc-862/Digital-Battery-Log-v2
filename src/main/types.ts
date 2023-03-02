@@ -1,4 +1,4 @@
-export interface BatteryRecord {
+export interface iBatteryRecord {
   number: string;
   soc: string;
   rint: string;
@@ -7,18 +7,6 @@ export interface BatteryRecord {
   out: boolean;
   updated?: boolean;
 }
-export interface Config {
-  pitcartMode: boolean;
-  localPort: number;
-  database: {
-    address: string;
-    port: number;
-  };
-  externalAPIRoot: string;
-  sheetsAPIRoot: string;
-  kioskMode: boolean;
-  colors: Colors;
-}
 export interface Colors {
   primary: string;
   secondary: string;
@@ -26,4 +14,35 @@ export interface Colors {
   warning: string;
   primaryText: string;
   secondaryText: string;
+}
+export interface iConfig {
+  colors: Colors;
+  logging: iLoggingConfig;
+  api: iAPIConfig;
+  dev: iDevConfig;
+}
+export interface iLoggingConfig {
+  historyLengthHours: number;
+  batteryYearRangeLower: number;
+  batteryYearRangeUpper: number;
+  batteryNumberRangeLower: number;
+  batteryNumberRangeUpper: number;
+  socRangeLower: number;
+  socRangeUpper: number;
+  rintLength: number;
+}
+export interface iAPIConfig {
+  sheetLink: string;
+  syncTimeMinutes: number;
+  centralServerMode: boolean;
+  sheetsSync: boolean;
+  centralServerAPIRoot: string;
+  database: {
+    address: string;
+    port: number;
+    databaseName: string;
+  };
+}
+export interface iDevConfig {
+  devServerPort: number;
 }

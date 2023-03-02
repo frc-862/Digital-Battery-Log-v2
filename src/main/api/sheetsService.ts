@@ -5,7 +5,7 @@ import path from "path";
 import process from "process";
 import { OAuth2Client } from "googleapis-common";
 import { batteryRecord } from "../db/models/battery";
-import { BatteryRecord } from "../types";
+import { iBatteryRecord } from "../types";
 import { HydratedDocument } from "mongoose";
 
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
@@ -86,7 +86,7 @@ async function syncDb(auth: OAuth2Client): Promise<void> {
   } else {
     nextOpenRow = res.data.values.length + 2;
   }
-  const docs: HydratedDocument<BatteryRecord>[] = await batteryRecord.find({
+  const docs: HydratedDocument<iBatteryRecord>[] = await batteryRecord.find({
     updated: false,
   });
   const range = `Master Record!A${nextOpenRow}:E`;
@@ -127,7 +127,7 @@ async function syncDb(auth: OAuth2Client): Promise<void> {
     return aNum - bNum;
   });
   batteries.forEach(async (battery) => {
-    const docs: HydratedDocument<BatteryRecord>[] = await batteryRecord
+    const docs: HydratedDocument<iBatteryRecord>[] = await batteryRecord
       .find({
         number: parseInt(battery.replace(".", "")),
         updated: false,

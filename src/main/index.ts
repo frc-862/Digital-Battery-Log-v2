@@ -3,7 +3,7 @@ import { app, BrowserWindow, session, ipcMain } from "electron";
 import { config } from "./store";
 import { startSync } from "./api/periodicSync";
 import { ipc } from "./IPC";
-import path from "path"
+import path from "path";
 import "./db/db";
 const createWindow = () => {
   // Create the browser window.
@@ -30,14 +30,14 @@ const createWindow = () => {
     //mainWindow.webContents.openDevTools()
   } else {
     // and load the index.html of the app.
-   // mainWindow.loadFile("../../.output/public/index.html");
-   mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
+    // mainWindow.loadFile("../../.output/public/index.html");
+    mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
 
     // Open the DevTools.
   }
   mainWindow.webContents.on("did-fail-load", () => {
     console.log("did-fail-load");
-   // mainWindow.loadFile("../../.output/public/index.html");
+    // mainWindow.loadFile("../../.output/public/index.html");
     mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
     // REDIRECT TO FIRST WEBPAGE AGAIN
   });
