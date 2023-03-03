@@ -21,14 +21,31 @@ export interface iConfig {
   api: iAPIConfig;
   dev: iDevConfig;
 }
+export interface iConfigPrivate extends iConfig {
+  auth: iAuthConfig;
+}
+export interface iAuthConfig {
+  credentials: {};
+  token: {
+    type: string;
+    client_id: string;
+    client_secret: string;
+    refresh_token: string;
+  };
+}
 export interface iLoggingConfig {
   historyLengthHours: number;
   batteryYearRangeLower: number;
   batteryYearRangeUpper: number;
   batteryNumberRangeLower: number;
   batteryNumberRangeUpper: number;
+  batteryLength: number;
   socRangeLower: number;
   socRangeUpper: number;
+  socLengthUpper: number;
+  socLengthLower: number;
+  rintRangeLower: number;
+  rintRangeUpper: number;
   rintLength: number;
 }
 export interface iAPIConfig {

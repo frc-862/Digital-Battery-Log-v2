@@ -1,5 +1,5 @@
-import { Config } from "../render";
-export const getConfig = async (): Promise<Config | boolean> => {
+import { iConfig } from "../render";
+export const getConfig = async (): Promise<iConfig | boolean> => {
   try {
     const config = await window.electronAPI.config.get();
     if (typeof config != "object") return false;

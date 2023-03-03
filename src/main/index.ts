@@ -1,10 +1,10 @@
 // Modules to control application life and create native browser window
-import { app, BrowserWindow, session, ipcMain } from "electron";
+import { app, BrowserWindow, session } from "electron";
 import { config } from "./store";
 import { startSync } from "./api/periodicSync";
 import { ipc } from "./IPC";
 import path from "path";
-import "./db/db";
+import db from "./db/db";
 const createWindow = () => {
   // Create the browser window.
   console.log(app.getPath("userData"));
@@ -16,23 +16,17 @@ const createWindow = () => {
       nodeIntegration: false,
       contextIsolation: true,
     },
-    kiosk: !app.commandLine.hasSwitch("dev"),
     frame: false,
   });
-  /*
-    ipcMain.on('send-message', (event, message) => {
-      console.log(message)
-    })
-    */
 
   if (app.commandLine.hasSwitch("dev")) {
-    mainWindow.loadURL("http://localhost:3000");
+    mainWindow.loadURL(`http://localhost:${config.store.dev.devServerPort}`);
     //mainWindow.webContents.openDevTools()
   } else {
     // and load the index.html of the app.
     // mainWindow.loadFile("../../.output/public/index.html");
     mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
-
+    mainWindow.webContents.setZoomLevel(0.67);
     // Open the DevTools.
   }
   mainWindow.webContents.on("did-fail-load", () => {
@@ -49,6 +43,11 @@ const createWindow = () => {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   ipc();
+  db(
+    config.store.api.database.address,
+    config.store.api.database.port.toString(),
+    config.store.api.database.databaseName,
+  );
   createWindow();
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
@@ -64,7 +63,7 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
-  startSync();
+  if (config.store.api.sheetsSync == true) startSync();
   app.getPath("userData");
 });
 

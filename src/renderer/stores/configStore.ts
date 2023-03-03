@@ -11,7 +11,7 @@ export const useConfigStore = defineStore({
       sheetsSync: true,
       centralServerAPIRoot: "",
       database: {
-        address: "",
+        address: "mongodb://localhost",
         port: 27017,
         databaseName: "logs",
       },
@@ -25,8 +25,13 @@ export const useConfigStore = defineStore({
       batteryYearRangeUpper: 23,
       batteryNumberRangeLower: 1,
       batteryNumberRangeUpper: 8,
+      batteryLength: 4,
       socRangeLower: 0,
       socRangeUpper: 130,
+      socLengthUpper: 3,
+      socLengthLower: 1,
+      rintRangeLower: 0,
+      rintRangeUpper: 999,
       rintLength: 3,
     },
     colors: {
@@ -47,10 +52,120 @@ export const useConfigStore = defineStore({
       this.colors = config.colors;
     },
     async updateConfig() {
-      await window.electronAPI.config.set("api", this.api.toString());
-      await window.electronAPI.config.set("dev", this.dev.toString());
-      await window.electronAPI.config.set("logging", this.logging.toString());
-      await window.electronAPI.config.set("colors", this.colors.toString());
+      console.log(this.dev, this.api, this.logging, this.colors);
+
+      await window.electronAPI.config.set(
+        "dev.devServerPort",
+        this.dev.devServerPort.toString(),
+      );
+
+      await window.electronAPI.config.set(
+        "colors.primary",
+        this.colors.primary,
+      );
+      await window.electronAPI.config.set(
+        "colors.secondary",
+        this.colors.secondary,
+      );
+      await window.electronAPI.config.set(
+        "colors.tertiary",
+        this.colors.tertiary,
+      );
+      await window.electronAPI.config.set(
+        "colors.warning",
+        this.colors.warning,
+      );
+      await window.electronAPI.config.set(
+        "colors.primaryText",
+        this.colors.primaryText,
+      );
+      await window.electronAPI.config.set(
+        "colors.secondaryText",
+        this.colors.secondaryText,
+      );
+
+      await window.electronAPI.config.set("api.sheetLink", this.api.sheetLink);
+      await window.electronAPI.config.set(
+        "api.syncTimeMinutes",
+        this.api.syncTimeMinutes.toString(),
+      );
+      await window.electronAPI.config.set(
+        "api.centralServerMode",
+        this.api.centralServerMode.toString(),
+      );
+      await window.electronAPI.config.set(
+        "api.sheetsSync",
+        this.api.sheetsSync.toString(),
+      );
+      await window.electronAPI.config.set(
+        "api.centralServerAPIRoot",
+        this.api.centralServerAPIRoot,
+      );
+      await window.electronAPI.config.set(
+        "api.database.address",
+        this.api.database.address,
+      );
+      await window.electronAPI.config.set(
+        "api.database.port",
+        this.api.database.port.toString(),
+      );
+      await window.electronAPI.config.set(
+        "api.database.databaseName",
+        this.api.database.databaseName,
+      );
+
+      await window.electronAPI.config.set(
+        "logging.historyLengthHours",
+        this.logging.historyLengthHours.toString(),
+      );
+      await window.electronAPI.config.set(
+        "logging.batteryYearRangeLower",
+        this.logging.batteryYearRangeLower.toString(),
+      );
+      await window.electronAPI.config.set(
+        "logging.batteryYearRangeUpper",
+        this.logging.batteryYearRangeUpper.toString(),
+      );
+      await window.electronAPI.config.set(
+        "logging.batteryNumberRangeLower",
+        this.logging.batteryNumberRangeLower.toString(),
+      );
+      await window.electronAPI.config.set(
+        "logging.batteryNumberRangeUpper",
+        this.logging.batteryNumberRangeUpper.toString(),
+      );
+      await window.electronAPI.config.set(
+        "logging.batteryLength",
+        this.logging.batteryLength.toString(),
+      );
+      await window.electronAPI.config.set(
+        "logging.socRangeLower",
+        this.logging.socRangeLower.toString(),
+      );
+      await window.electronAPI.config.set(
+        "logging.socRangeUpper",
+        this.logging.socRangeUpper.toString(),
+      );
+      await window.electronAPI.config.set(
+        "logging.socLengthUpper",
+        this.logging.socLengthUpper.toString(),
+      );
+      await window.electronAPI.config.set(
+        "logging.socLengthLower",
+        this.logging.socLengthLower.toString(),
+      );
+      await window.electronAPI.config.set(
+        "logging.rintLength",
+        this.logging.rintLength.toString(),
+      );
+      await window.electronAPI.config.set(
+        "logging.rintRangeLower",
+        this.logging.rintRangeLower.toString(),
+      );
+      await window.electronAPI.config.set(
+        "logging.rintRangeUpper",
+        this.logging.rintRangeUpper.toString(),
+      );
     },
   },
   getters: {
@@ -58,7 +173,15 @@ export const useConfigStore = defineStore({
       return this.colors;
     },
     getAllConfig(): iConfig {
-      return this;
+      return {
+        colors: this.colors,
+        api: this.api,
+        dev: this.dev,
+        logging: this.logging,
+      };
+    },
+    getLogging(): iConfig["logging"] {
+      return this.logging;
     },
   },
 });

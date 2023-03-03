@@ -52,8 +52,13 @@ export interface iLoggingConfig {
   batteryYearRangeUpper: number;
   batteryNumberRangeLower: number;
   batteryNumberRangeUpper: number;
+  batteryLength: number;
   socRangeLower: number;
   socRangeUpper: number;
+  socLengthUpper: number;
+  socLengthLower: number;
+  rintRangeLower: number;
+  rintRangeUpper: number;
   rintLength: number;
 }
 export interface iAPIConfig {

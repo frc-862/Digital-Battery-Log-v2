@@ -7,14 +7,14 @@
           <p>Colors</p>
         </div>
         <div class="interactable" @click="page = 'colors'">
-          <p>Open Color Config</p>
+          <p>Open Menu</p>
         </div>
       </div>
       <div class="setting">
         <div class="label">
           <p>Logging</p>
         </div>
-        <div class="interactable">
+        <div class="interactable" @click="page = 'logging'">
           <p>Open Menu</p>
         </div>
       </div>
@@ -22,7 +22,7 @@
         <div class="label">
           <p>API</p>
         </div>
-        <div class="interactable">
+        <div class="interactable" @click="page = 'api'">
           <p>Open Menu</p>
         </div>
       </div>
@@ -30,7 +30,7 @@
         <div class="label">
           <p>Dev</p>
         </div>
-        <div class="interactable">
+        <div class="interactable" @click="page = 'dev'">
           <p>Open Menu</p>
         </div>
       </div>
@@ -129,12 +129,306 @@
           class="fa-solid fa-left-long fa-3x"></i>
       </div>
     </div>
-    <div class="settingsIsland api-island" v-show="page == 'api'"></div>
+    <div class="settingsIsland submenu-island" v-show="page == 'api'">
+      <div class="settings">
+        <div class="setting">
+          <div class="label">
+            <p>Sheets Link</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.api.sheetLink"
+            :placeholder="useConfigStore().getAllConfig.api.sheetLink" />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Sync time (minutes)</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.api.syncTimeMinutes"
+            :placeholder="
+              useConfigStore().getAllConfig.api.syncTimeMinutes.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Pitcart Server Mode</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.api.centralServerMode"
+            :placeholder="
+              useConfigStore().getAllConfig.api.centralServerMode.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Sheets Sync</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.api.sheetsSync"
+            :placeholder="
+              useConfigStore().getAllConfig.api.sheetsSync.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Central Server API root</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.api.centralServerAPIRoot"
+            :placeholder="
+              useConfigStore().getAllConfig.api.centralServerAPIRoot.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Database address</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.api.database.address"
+            :placeholder="
+              useConfigStore().getAllConfig.api.database.address.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Database port</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.api.database.port"
+            :placeholder="
+              useConfigStore().getAllConfig.api.database.port.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Database name</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.api.database.databaseName"
+            :placeholder="
+              useConfigStore().getAllConfig.api.database.databaseName.toString()
+            " />
+        </div>
+      </div>
+      <div class="footer">
+        <i
+          v-show="page != 'home'"
+          @click="back()"
+          class="fa-solid fa-left-long fa-3x"></i>
+        <div class="button" @click="updateConfig()">Save</div>
+      </div>
+    </div>
+    <div class="settingsIsland submenu-island" v-show="page == 'dev'">
+      <div class="settings">
+        <div class="setting">
+          <div class="label">
+            <p>Dev Server Port</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.dev.devServerPort"
+            :placeholder="
+              useConfigStore().getAllConfig.dev.devServerPort.toString()
+            " />
+        </div>
+      </div>
+      <div class="footer">
+        <i
+          v-show="page != 'home'"
+          @click="back()"
+          class="fa-solid fa-left-long fa-3x"></i>
+        <div class="button" @click="updateConfig()">Save</div>
+      </div>
+    </div>
+    <div class="settingsIsland submenu-island" v-show="page == 'logging'">
+      <div class="settings">
+        <div class="setting">
+          <div class="label">
+            <p>History Length (hours)</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.historyLengthHours"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.historyLengthHours.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Battery Year Range Lower</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.batteryYearRangeLower"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.batteryYearRangeLower.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Battery Year Range Upper</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.batteryYearRangeUpper"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.batteryYearRangeUpper.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Battery Number Range Lower</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.batteryNumberRangeLower"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.batteryNumberRangeLower.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Battery Number Range Upper</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.batteryNumberRangeUpper"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.batteryNumberRangeUpper.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Battery Length</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.batteryLength"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.batteryLength.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>SOC Range Lower</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.socRangeLower"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.socRangeLower.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>SOC Range Upper</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.socRangeUpper"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.socRangeUpper.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>SOC Length Upper</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.socLengthUpper"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.socLengthUpper.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>SOC Length Lower</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.socLengthLower"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.socLengthLower.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Rint Length</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.rintLength"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.rintLength.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Rint Range Lower</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.rintRangeLower"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.rintRangeLower.toString()
+            " />
+        </div>
+        <div class="setting">
+          <div class="label">
+            <p>Rint Range Upper</p>
+          </div>
+          <input
+            type="text"
+            class="interactable"
+            v-model="config.logging.rintRangeUpper"
+            :placeholder="
+              useConfigStore().getAllConfig.logging.rintRangeUpper.toString()
+            " />
+        </div>
+      </div>
+      <div class="footer">
+        <i
+          v-show="page != 'home'"
+          @click="back()"
+          class="fa-solid fa-left-long fa-3x"></i>
+        <div class="button" @click="updateConfig()">Save</div>
+      </div>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
   import { useConfigStore } from "../stores/configStore";
-  import { Colors } from "../render";
+  import { Colors, iConfig } from "../render";
   import { Ref } from "vue";
 
   let colors: Colors = useConfigStore().getColors;
@@ -142,7 +436,17 @@
   let color = ref(0);
   let colorName = ref("");
   let hex = ref("#000000");
+  let config: Ref<iConfig> = ref(useConfigStore().getAllConfig);
 
+  const updateConfig = () => {
+    const store = useConfigStore();
+    store.colors = config.value.colors;
+    store.api = config.value.api;
+    store.dev = config.value.dev;
+    store.logging = config.value.logging;
+    store.updateConfig();
+    page.value = "home";
+  };
   const checkDev = async (): Promise<boolean> => {
     return await window.electronAPI.isDev();
   };
@@ -153,6 +457,12 @@
       page.value = "home";
     } else if (page.value == "picker") {
       page.value = "colors";
+    } else if (page.value == "api") {
+      page.value = "home";
+    } else if (page.value == "dev") {
+      page.value = "home";
+    } else if (page.value == "logging") {
+      page.value = "home";
     }
   };
   const submit = () => {
@@ -326,9 +636,9 @@
       tertiaryColor,
     );
     document.documentElement.style.setProperty("--warningColor", warningColor);
-    document.documentElement.style.setProperty("--primaryText", primaryText);
+    document.documentElement.style.setProperty("--textColor", primaryText);
     document.documentElement.style.setProperty(
-      "--secondaryText",
+      "--secondaryTextColor",
       secondaryText,
     );
   };
@@ -471,6 +781,20 @@
     & > * {
       color: var(--secondaryTextColor);
     }
+    .button {
+      width: 100px;
+      height: 50px;
+      border: 5px solid var(--secondaryColor);
+      border-radius: 25px;
+      background-color: var(--primaryColor);
+      color: var(--secondaryTextColor);
+      font-size: 1.5rem;
+      margin: 5%;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+    }
   }
 
   .settingsContainer {
@@ -502,6 +826,32 @@
       gap: 2%;
       padding-top: 1%;
     }
+    .submenu-island {
+      .settings {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        height: auto;
+        gap: 5%;
+        margin-top: 5%;
+        overflow-y: scroll;
+        // padding-top: 25%;
+        &::-webkit-scrollbar {
+          width: 0.8em;
+        }
+
+        &::-webkit-scrollbar-track {
+          background-color: var(--tertiaryColor);
+          border-radius: 10px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background: var(--secondaryColor);
+          border-radius: 25px;
+        }
+      }
+    }
   }
 
   .setting {
@@ -527,6 +877,10 @@
         font-size: 1.5rem;
         color: var(--secondaryTextColor);
       }
+      input {
+        font-size: 1.5rem;
+        color: var(--secondaryTextColor);
+      }
     }
 
     .interactable {
@@ -535,10 +889,14 @@
       display: flex;
       flex-direction: row;
       justify-content: center;
+      justify-items: center;
       align-items: center;
+      align-content: center;
       width: 50%;
       height: 100%;
       border: 5px solid var(--tertiaryColor);
+      font-size: 2rem;
+      text-align: center;
 
       p {
         font-size: 2rem;

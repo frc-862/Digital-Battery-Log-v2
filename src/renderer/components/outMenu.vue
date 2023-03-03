@@ -139,17 +139,32 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { ref } from "vue";
   import type { Ref } from "vue";
-  const batteryNumberLength: number = 4;
+  import { useConfigStore } from "../stores/configStore";
+  const batteryNumberLength: number = useConfigStore().logging.batteryLength;
   const batteryRange = {
-    year: [20, 23],
-    number: [1, 8],
+    year: [
+      useConfigStore().logging.batteryYearRangeLower,
+      useConfigStore().logging.batteryYearRangeUpper,
+    ],
+    number: [
+      useConfigStore().logging.batteryNumberRangeLower,
+      useConfigStore().logging.batteryNumberRangeUpper,
+    ],
   };
-  const socRange: number[] = [0, 130];
-  const rintRange: number[] = [0, 999];
-  const socLength: number[] = [1, 3];
-  const rintLength: number = 3;
+  const socRange: number[] = [
+    useConfigStore().logging.socRangeLower,
+    useConfigStore().logging.socRangeUpper,
+  ];
+  const rintRange: number[] = [
+    useConfigStore().logging.rintRangeLower,
+    useConfigStore().logging.rintRangeUpper,
+  ];
+  const socLength: number[] = [
+    useConfigStore().logging.socLengthLower,
+    useConfigStore().logging.socLengthUpper,
+  ];
+  const rintLength: number = useConfigStore().logging.rintLength;
 
   let str: Ref<string> = ref("");
   let progression: Ref<number> = ref(0);
