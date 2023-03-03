@@ -3,11 +3,12 @@ import { ipcMain } from "electron";
 import { getAllLogs, getLatestLog } from "./db/getLogs";
 import logOut from "./db/logOut";
 import logIn from "./db/logIn";
-import { BatteryRecord, Config } from "./types";
+import { iBatteryRecord, iConfig } from "./types";
+import { app } from "electron";
 export const ipc = () => {
-  ipcMain.handle("config-get", async (event): Promise<Config | boolean> => {
+  ipcMain.handle("config-get", async (event): Promise<iConfig | boolean> => {
     try {
-      const conf: Config = config.store;
+      const conf: iConfig = config.store;
       return conf;
     } catch (error) {
       return false;
@@ -22,11 +23,11 @@ export const ipc = () => {
       return false;
     }
   });
-  ipcMain.handle("log-out", async (event, data: BatteryRecord) => {
+  ipcMain.handle("log-out", async (event, data: iBatteryRecord) => {
     const success: boolean = await logOut(data);
     return success;
   });
-  ipcMain.handle("log-in", async (event, data: BatteryRecord) => {
+  ipcMain.handle("log-in", async (event, data: iBatteryRecord) => {
     const success: boolean = await logIn(data);
     return success;
   });
@@ -37,5 +38,8 @@ export const ipc = () => {
   ipcMain.handle("logs-getLatest", async (event, battery: string) => {
     const log = await getLatestLog(battery);
     return log;
+  });
+  ipcMain.handle("is-dev", (event) => {
+    return app.commandLine.hasSwitch("dev");
   });
 };

@@ -1,19 +1,20 @@
 export interface IElectronAPI {
   sendMessage: (string) => Promise<void>;
   config: {
-    get: () => Promise<Config>;
+    get: () => Promise<iConfig>;
     set: (key: string, val: string) => Promise<void>;
-  }
+  };
   logOut: (data: batteryData) => Promise<boolean>;
   logIn: (data: batteryData) => Promise<boolean>;
   logs: {
     getAll: (historyLength: number) => Promise<Log[]>;
     getLatest: (battery: string) => Promise<Log>;
-  }
+  };
+  isDev: () => Promise<boolean>;
 }
 export declare global {
   interface Window {
-    electronAPI: IElectronAPI
+    electronAPI: IElectronAPI;
   }
 }
 export interface Log {
@@ -39,15 +40,39 @@ export interface Colors {
   primaryText: string;
   secondaryText: string;
 }
-export interface Config {
-  pitcartMode: boolean;
-  localPort: number;
+export interface iConfig {
+  colors: Colors;
+  logging: iLoggingConfig;
+  api: iAPIConfig;
+  dev: iDevConfig;
+}
+export interface iLoggingConfig {
+  historyLengthHours: number;
+  batteryYearRangeLower: number;
+  batteryYearRangeUpper: number;
+  batteryNumberRangeLower: number;
+  batteryNumberRangeUpper: number;
+  batteryLength: number;
+  socRangeLower: number;
+  socRangeUpper: number;
+  socLengthUpper: number;
+  socLengthLower: number;
+  rintRangeLower: number;
+  rintRangeUpper: number;
+  rintLength: number;
+}
+export interface iAPIConfig {
+  sheetLink: string;
+  syncTimeMinutes: number;
+  centralServerMode: boolean;
+  sheetsSync: boolean;
+  centralServerAPIRoot: string;
   database: {
     address: string;
     port: number;
+    databaseName: string;
   };
-  externalAPIRoot: string;
-  sheetsAPIRoot: string;
-  kioskMode: boolean;
-  colors: Colors;
+}
+export interface iDevConfig {
+  devServerPort: number;
 }

@@ -1,6 +1,8 @@
 import { Log } from "../render";
+import { useConfigStore } from "../stores/configStore";
 export async function getAllLogs(): Promise<Log[] | boolean> {
-  const historyLength = 36000000;
+  const historyLength = 3600000 * useConfigStore().logging.historyLengthHours;
+
   try {
     const logs = await window.electronAPI.logs.getAll(historyLength);
     return logs;

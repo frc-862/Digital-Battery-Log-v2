@@ -7,7 +7,7 @@
   "scripts": {
     "startElectron": "electron ./dist/main/index.js",
     "dev": "tsc -p ./src/main/tsconfig.json && node ./dist/main/scripts/devServer.js",
-    "compile": "tsc -p ./src/main/tsconfig.json",
+    "compile": "NODE_OPTIONS='--max-old-space-size=2048' tsc -p ./src/main/tsconfig.json",
     "startElectronDev": "electron ./dist/main/index.js --dev",
     "preBuild": "tsc -p ./src/main/tsconfig.json && nuxi generate",
     "build:linux": "electron-builder -l",

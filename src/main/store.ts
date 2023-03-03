@@ -1,15 +1,36 @@
 import Store from "electron-store";
-import { Config } from "./types";
+import { iConfigPrivate } from "./types";
 const defaults = {
-  pitcartMode: true,
-  localPort: 8080,
-  database: {
-    address: "",
-    port: 27017,
+  api: {
+    sheetLink: "",
+    syncTimeMinutes: 1,
+    centralServerMode: false,
+    sheetsSync: true,
+    centralServerAPIRoot: "",
+    database: {
+      address: "mongodb://localhost",
+      port: 27017,
+      databaseName: "logs",
+    },
   },
-  externalAPIRoot: "",
-  sheetsAPIRoot: "",
-  kioskMode: false,
+  dev: {
+    devServerPort: 3000,
+  },
+  logging: {
+    historyLengthHours: 24,
+    batteryYearRangeLower: 20,
+    batteryYearRangeUpper: 23,
+    batteryNumberRangeLower: 1,
+    batteryNumberRangeUpper: 8,
+    batteryLength: 4,
+    socRangeLower: 0,
+    socRangeUpper: 130,
+    socLengthUpper: 3,
+    socLengthLower: 1,
+    rintRangeLower: 0,
+    rintRangeUpper: 999,
+    rintLength: 3,
+  },
   colors: {
     primary: "#000044",
     secondary: "#ffffff",
@@ -18,5 +39,14 @@ const defaults = {
     primaryText: "#000000",
     secondaryText: "#ffffff",
   },
+  auth: {
+    credentials: {},
+    token: {
+      type: "",
+      client_id: "",
+      client_secret: "",
+      refresh_token: "",
+    },
+  },
 };
-export let config = new Store<Config>({ defaults: defaults });
+export let config = new Store<iConfigPrivate>({ defaults: defaults });

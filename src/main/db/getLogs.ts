@@ -1,16 +1,16 @@
-import { BatteryRecord } from "../types";
+import { iBatteryRecord } from "../types";
 import { batteryRecord } from "./models/battery";
 import { HydratedDocument } from "mongoose";
 export async function getAllLogs(
   historyLength: number,
-): Promise<BatteryRecord[] | boolean | undefined> {
+): Promise<iBatteryRecord[] | boolean | undefined> {
   try {
-    const logs: HydratedDocument<BatteryRecord>[] = await batteryRecord.find({
+    const logs: HydratedDocument<iBatteryRecord>[] = await batteryRecord.find({
       timeEpoch: { $gte: Date.now() - historyLength },
     });
     if (logs) {
-      let logsData: BatteryRecord[] = [];
-      logs.forEach((log: HydratedDocument<BatteryRecord>) => {
+      let logsData: iBatteryRecord[] = [];
+      logs.forEach((log: HydratedDocument<iBatteryRecord>) => {
         logsData.push({
           number: log.number,
           soc: log.soc,
@@ -21,7 +21,7 @@ export async function getAllLogs(
         });
       });
       //sort logs data so that the most recent is at the top
-      logsData.sort((a: BatteryRecord, b: BatteryRecord) => {
+      logsData.sort((a: iBatteryRecord, b: iBatteryRecord) => {
         return b.timeEpoch - a.timeEpoch;
       });
       return logsData;
@@ -35,12 +35,13 @@ export async function getAllLogs(
 }
 export async function getLatestLog(
   battery: string,
-): Promise<BatteryRecord | boolean | null> {
+): Promise<iBatteryRecord | boolean | null> {
   try {
-    const latest: HydratedDocument<BatteryRecord>[] | null = await batteryRecord
-      .find({ number: battery })
-      .sort({ timeEpoch: -1 })
-      .limit(1);
+    const latest: HydratedDocument<iBatteryRecord>[] | null =
+      await batteryRecord
+        .find({ number: battery })
+        .sort({ timeEpoch: -1 })
+        .limit(1);
     if (latest != null && latest.length > 0) {
       return {
         number: latest[0].number,

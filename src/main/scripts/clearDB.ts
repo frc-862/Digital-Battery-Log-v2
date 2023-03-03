@@ -1,7 +1,5 @@
 import "../db/db";
-import { BatteryRecord } from "../types";
 import { batteryRecord } from "../db/models/battery";
-import { HydratedDocument } from "mongoose";
 
 const clearDB = async () => {
   try {

@@ -26,9 +26,9 @@
       tertiaryColor,
     );
     document.documentElement.style.setProperty("--warningColor", warningColor);
-    document.documentElement.style.setProperty("--primaryText", primaryText);
+    document.documentElement.style.setProperty("--textColor", primaryText);
     document.documentElement.style.setProperty(
-      "--secondaryText",
+      "--secondaryTextColor",
       secondaryText,
     );
   };
