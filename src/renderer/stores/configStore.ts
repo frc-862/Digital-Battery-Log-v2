@@ -52,8 +52,6 @@ export const useConfigStore = defineStore({
       this.colors = config.colors;
     },
     async updateConfig() {
-      console.log(this.dev, this.api, this.logging, this.colors);
-
       await window.electronAPI.config.set(
         "dev.devServerPort",
         this.dev.devServerPort.toString(),

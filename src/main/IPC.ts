@@ -4,7 +4,7 @@ import { getAllLogs, getLatestLog } from "./db/getLogs";
 import logOut from "./db/logOut";
 import logIn from "./db/logIn";
 import { iBatteryRecord, iConfig } from "./types";
-import { app } from "electron";
+import { getIP, killX } from "./helper";
 export const ipc = () => {
   ipcMain.handle("config-get", async (event): Promise<iConfig | boolean> => {
     try {
@@ -39,7 +39,11 @@ export const ipc = () => {
     const log = await getLatestLog(battery);
     return log;
   });
-  ipcMain.handle("is-dev", (event) => {
-    return app.commandLine.hasSwitch("dev");
+  ipcMain.handle("getIP", async (event): Promise<string[]> => {
+    const ip = await getIP();
+    return ip;
+  });
+  ipcMain.handle("killX", (event) => {
+    killX();
   });
 };

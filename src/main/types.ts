@@ -1,3 +1,7 @@
+export interface iIPRequest {
+  device: string;
+  address: string;
+}
 export interface iBatteryRecord {
   number: string;
   soc: string;
