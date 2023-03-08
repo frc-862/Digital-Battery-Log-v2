@@ -10,12 +10,17 @@ export interface IElectronAPI {
     getAll: (historyLength: number) => Promise<Log[]>;
     getLatest: (battery: string) => Promise<Log>;
   };
-  isDev: () => Promise<boolean>;
+  getIP: () => Promise<iIPRequest[]>;
+  killX: () => Promise<void>;
 }
 export declare global {
   interface Window {
     electronAPI: IElectronAPI;
   }
+}
+export interface iIPRequest {
+  device: string;
+  address: string;
 }
 export interface Log {
   number: string;

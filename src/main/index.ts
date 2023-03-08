@@ -11,6 +11,8 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 1024,
     height: 600,
+    resizable: false,
+    movable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: false,
@@ -26,14 +28,12 @@ const createWindow = () => {
     // and load the index.html of the app.
     // mainWindow.loadFile("../../.output/public/index.html");
     mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
-    mainWindow.webContents.setZoomLevel(0.67);
     // Open the DevTools.
   }
   mainWindow.webContents.on("did-fail-load", () => {
     console.log("did-fail-load");
     // mainWindow.loadFile("../../.output/public/index.html");
     mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
-    mainWindow.webContents.setZoomLevel(0.67);
     // REDIRECT TO FIRST WEBPAGE AGAIN
   });
 };

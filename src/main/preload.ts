@@ -27,7 +27,10 @@ contextBridge.exposeInMainWorld("electronAPI", {
       return ipcRenderer.invoke("logs-getLatest", battery);
     },
   },
-  isDev(): Promise<boolean> {
-    return ipcRenderer.invoke("is-dev");
+  getIP(): Promise<string[]> {
+    return ipcRenderer.invoke("getIP");
+  },
+  killX(): Promise<void> {
+    return ipcRenderer.invoke("killX");
   },
 });

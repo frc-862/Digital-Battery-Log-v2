@@ -26,11 +26,11 @@
           <p>Open Menu</p>
         </div>
       </div>
-      <div class="setting" v-if="isDev == true">
+      <div class="setting">
         <div class="label">
-          <p>Dev</p>
+          <p>Info</p>
         </div>
-        <div class="interactable" @click="page = 'dev'">
+        <div class="interactable" @click="page = 'info'">
           <p>Open Menu</p>
         </div>
       </div>
@@ -234,19 +234,21 @@
         <div class="button" @click="updateConfig()">Save</div>
       </div>
     </div>
-    <div class="settingsIsland submenu-island" v-show="page == 'dev'">
+    <div class="settingsIsland submenu-island" v-show="page == 'info'">
       <div class="settings">
+        <div class="setting" v-for="net of ip">
+          <div class="label">
+            <p>IP address: {{ net.device }}</p>
+          </div>
+          <div class="interactable">
+            <p>{{ net.address }}</p>
+          </div>
+        </div>
         <div class="setting">
           <div class="label">
-            <p>Dev Server Port</p>
+            <p>Kill X</p>
           </div>
-          <input
-            type="text"
-            class="interactable"
-            v-model="config.dev.devServerPort"
-            :placeholder="
-              useConfigStore().getAllConfig.dev.devServerPort.toString()
-            " />
+          <div class="interactable" @click="killX()">Kill</div>
         </div>
       </div>
       <div class="footer">
@@ -428,7 +430,7 @@
 </template>
 <script setup lang="ts">
   import { useConfigStore } from "../stores/configStore";
-  import { Colors, iConfig } from "../render";
+  import { Colors, iConfig, iIPRequest } from "../render";
   import { Ref } from "vue";
 
   let colors: Colors = useConfigStore().getColors;
@@ -437,7 +439,12 @@
   let colorName = ref("");
   let hex = ref("#000000");
   let config: Ref<iConfig> = ref(useConfigStore().getAllConfig);
+  let ip: Ref<iIPRequest[]> = ref([]);
+  ip.value = await window.electronAPI.getIP();
 
+  const killX = () => {
+    window.electronAPI.killX();
+  };
   const updateConfig = () => {
     const store = useConfigStore();
     store.colors = config.value.colors;
@@ -447,10 +454,6 @@
     store.updateConfig();
     page.value = "home";
   };
-  const checkDev = async (): Promise<boolean> => {
-    return await window.electronAPI.isDev();
-  };
-  const isDev: Ref<boolean> = ref(await checkDev());
 
   const back = () => {
     if (page.value == "colors") {
@@ -459,7 +462,7 @@
       page.value = "colors";
     } else if (page.value == "api") {
       page.value = "home";
-    } else if (page.value == "dev") {
+    } else if (page.value == "info") {
       page.value = "home";
     } else if (page.value == "logging") {
       page.value = "home";
@@ -834,6 +837,7 @@
         align-items: center;
         width: 100%;
         height: auto;
+        min-height: 70%;
         gap: 5%;
         margin-top: 5%;
         overflow-y: scroll;
