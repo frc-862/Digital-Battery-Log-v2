@@ -36,6 +36,7 @@ const createWindow = () => {
     mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
     // REDIRECT TO FIRST WEBPAGE AGAIN
   });
+  mainWindow.webContents.setZoomLevel(0.6);
 };
 
 // This method will be called when Electron has finished
