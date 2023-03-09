@@ -1,6 +1,6 @@
 {
   "name": "electron-battery-logger",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A digital battery logger for FRC",
   "main": "./dist/main/index.js",
   "type": "commonjs",
@@ -59,6 +59,15 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
+    },
+    "linux": {
+      "target": [
+        { 
+          "target": "AppImage",
+          "arch": [
+            "arm64"
+          ]}
+      ]
     },
     "files": [
       "package.json",
