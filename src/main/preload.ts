@@ -26,11 +26,26 @@ contextBridge.exposeInMainWorld("electronAPI", {
     getLatest(battery: string): Promise<iBatteryRecord | boolean> {
       return ipcRenderer.invoke("logs-getLatest", battery);
     },
+    getByFilter(
+      historyLength: number,
+      battery: string,
+      inFilter: string,
+    ): Promise<iBatteryRecord[] | boolean> {
+      return ipcRenderer.invoke(
+        "logs-getByFilter",
+        historyLength,
+        battery,
+        inFilter,
+      );
+    },
   },
   getIP(): Promise<string[]> {
     return ipcRenderer.invoke("getIP");
   },
   killX(): Promise<void> {
     return ipcRenderer.invoke("killX");
+  },
+  clearDB(): Promise<void> {
+    return ipcRenderer.invoke("clearDB");
   },
 });

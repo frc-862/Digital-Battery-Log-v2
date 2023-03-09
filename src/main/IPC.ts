@@ -1,10 +1,11 @@
 import { config } from "./store";
 import { ipcMain } from "electron";
-import { getAllLogs, getLatestLog } from "./db/getLogs";
+import { getAllLogs, getLatestLog, getLogsByFilter } from "./db/getLogs";
 import logOut from "./db/logOut";
 import logIn from "./db/logIn";
 import { iBatteryRecord, iConfig } from "./types";
 import { getIP, killX } from "./helper";
+import { clearDB } from "./db/clearDB";
 export const ipc = () => {
   ipcMain.handle("config-get", async (event): Promise<iConfig | boolean> => {
     try {
@@ -39,11 +40,21 @@ export const ipc = () => {
     const log = await getLatestLog(battery);
     return log;
   });
+  ipcMain.handle(
+    "logs-getByFilter",
+    async (event, historyLength: number, battery: string, inFilter: string) => {
+      const logs = await getLogsByFilter(historyLength, battery, inFilter);
+      return logs;
+    },
+  );
   ipcMain.handle("getIP", async (event): Promise<string[]> => {
     const ip = await getIP();
     return ip;
   });
   ipcMain.handle("killX", (event) => {
     killX();
+  });
+  ipcMain.handle("clearDB", async (event): Promise<void> => {
+    await clearDB();
   });
 };

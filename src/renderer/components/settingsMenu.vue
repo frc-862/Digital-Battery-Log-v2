@@ -250,13 +250,18 @@
           </div>
           <div class="interactable" @click="killX()">Kill</div>
         </div>
+        <div class="setting">
+          <div class="label">
+            <p>Clear DB</p>
+          </div>
+          <div class="interactable" @click="clearDB()">Clear</div>
+        </div>
       </div>
       <div class="footer">
         <i
           v-show="page != 'home'"
           @click="back()"
           class="fa-solid fa-left-long fa-3x"></i>
-        <div class="button" @click="updateConfig()">Save</div>
       </div>
     </div>
     <div class="settingsIsland submenu-island" v-show="page == 'logging'">
@@ -442,6 +447,9 @@
   let ip: Ref<iIPRequest[]> = ref([]);
   ip.value = await window.electronAPI.getIP();
 
+  const clearDB = () => {
+    window.electronAPI.clearDB();
+  };
   const killX = () => {
     window.electronAPI.killX();
   };
