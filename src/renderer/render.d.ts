@@ -9,9 +9,15 @@ export interface IElectronAPI {
   logs: {
     getAll: (historyLength: number) => Promise<Log[]>;
     getLatest: (battery: string) => Promise<Log>;
+    getByFilter: (
+      historyLength: number,
+      battery: string,
+      inFilter: string,
+    ) => Promise<Log[]>;
   };
   getIP: () => Promise<iIPRequest[]>;
   killX: () => Promise<void>;
+  clearDB: () => Promise<void>;
 }
 export declare global {
   interface Window {

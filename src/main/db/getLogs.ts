@@ -59,3 +59,43 @@ export async function getLatestLog(
     return false;
   }
 }
+export async function getLogsByFilter(
+  historyLength: number,
+  battery: string,
+  inFilter: string,
+) {
+  const params: any = { timeEpoch: { $gte: Date.now() - historyLength } };
+  if (inFilter != "all") {
+    params["out"] = inFilter == "out" ? true : false;
+  }
+  if (battery != "all") {
+    params["number"] = battery;
+  }
+  try {
+    const logs: HydratedDocument<iBatteryRecord>[] = await batteryRecord.find(
+      params,
+    );
+    if (logs) {
+      let logsData: iBatteryRecord[] = [];
+      logs.forEach((log: HydratedDocument<iBatteryRecord>) => {
+        logsData.push({
+          number: log.number,
+          soc: log.soc,
+          rint: log.rint,
+          time: log.time,
+          timeEpoch: log.timeEpoch,
+          out: log.out,
+        });
+      });
+      //sort logs data so that the most recent is at the top
+      logsData.sort((a: iBatteryRecord, b: iBatteryRecord) => {
+        return b.timeEpoch - a.timeEpoch;
+      });
+      return logsData;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
