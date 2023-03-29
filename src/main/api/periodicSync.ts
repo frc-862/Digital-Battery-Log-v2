@@ -5,10 +5,15 @@ const url = "https://www.google.com";
 import { config } from "../store";
 const minutes = config.store.api.syncTimeMinutes;
 export const startSync = () => {
-  cron.schedule(`*/${minutes % 60} */${minutes % 60} * * *`, () => {
-    if (!checkInternet()) return;
-    sync().catch();
-  });
+  cron.schedule(
+    `*/${minutes % 60} *${
+      Math.floor(minutes / 60) != 0 ? "/" + Math.floor(minutes / 60) : ""
+    } * * *`,
+    () => {
+      if (!checkInternet()) return;
+      sync().catch();
+    },
+  );
 };
 
 const checkInternet = async () => {

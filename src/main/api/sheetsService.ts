@@ -1,29 +1,30 @@
-import fs from "fs/promises";
+//import fs from "fs/promises";
 import { google } from "googleapis";
-import { authenticate } from "@google-cloud/local-auth";
+//import { authenticate } from "@google-cloud/local-auth";
 import path from "path";
-import process from "process";
-import { OAuth2Client } from "googleapis-common";
+import { app } from "electron";
+//import { OAuth2Client } from "googleapis-common";
 import { batteryRecord } from "../db/models/battery";
 import { iBatteryRecord } from "../types";
 import { HydratedDocument } from "mongoose";
+import { config } from "../store";
 
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
-const TOKEN_PATH = path.join(process.cwd(), "token.json");
-const CREDENTIALS_PATH = path.join(process.cwd(), "credentials.json");
-const spreadsheetId = "1SX7XJvakIZy1HRAKwPCJXn5hu9fjtQ1SoHH57GadeV0";
+//const TOKEN_PATH = path.join(process.cwd(), "token.json");
+const CREDENTIALS_PATH = path.join(app.getPath("userData"), "credentials.json");
+//const spreadsheetId = "1SX7XJvakIZy1HRAKwPCJXn5hu9fjtQ1SoHH57GadeV0";
+const spreadsheetId = config.store.api.sheetLink;
 const valueInputOption = "RAW";
 
-export const sync = () =>
-  authorize()
-    .then(syncDb)
-    .catch((err) => console.error(err));
+//export const sync = () => authorize().then(syncDb).catch((err) => console.error(err));
+export const sync = () => syncDb();
 
 /**
  * checks to see if credentials exist
  * @return {Promise<OAuth2Client | null>}
  *
  */
+/*
 async function loadSavedCredentialsIfExist(): Promise<OAuth2Client | null> {
   try {
     const content = await fs.readFile(TOKEN_PATH);
@@ -33,13 +34,14 @@ async function loadSavedCredentialsIfExist(): Promise<OAuth2Client | null> {
     return null;
   }
 }
-
+*/
 /**
  * Serializes credentials to a file comptible with GoogleAUth.fromJSON.
  *
  * @param {OAuth2Client} client
  * @return {Promise<void>}
  */
+/** 
 async function saveCredentials(client: OAuth2Client): Promise<void> {
   const content = await fs.readFile(CREDENTIALS_PATH);
   const keys = JSON.parse(content.toString());
@@ -52,11 +54,12 @@ async function saveCredentials(client: OAuth2Client): Promise<void> {
   });
   await fs.writeFile(TOKEN_PATH, payload);
 }
-
+*/
 /**
  * Load or request or authorization to call APIs.
  * @return {Promise<OAuth2Client>}  An authorized OAuth2 client.
  */
+/** 
 async function authorize(): Promise<OAuth2Client> {
   let client = await loadSavedCredentialsIfExist();
   if (client) {
@@ -71,9 +74,15 @@ async function authorize(): Promise<OAuth2Client> {
   }
   return client;
 }
-
-async function syncDb(auth: OAuth2Client): Promise<void> {
-  const sheets = google.sheets({ version: "v4", auth });
+*/
+async function syncDb(): Promise<void> {
+  const auth2 = new google.auth.GoogleAuth({
+    keyFile: CREDENTIALS_PATH,
+    scopes: SCOPES,
+  });
+  const client = await auth2.getClient();
+  //const sheets = google.sheets({ version: "v4", auth });
+  const sheets = google.sheets({ version: "v4", auth: client });
   const res = await sheets.spreadsheets.values
     .get({
       spreadsheetId: spreadsheetId,
@@ -93,7 +102,7 @@ async function syncDb(auth: OAuth2Client): Promise<void> {
 
   const values = docs.map((doc) => {
     return [
-      `${doc.number.slice(0, 2)}${doc.number.slice(2, 4)}}`,
+      `${doc.number.slice(0, 2)}${doc.number.slice(2, 4)}`,
       doc.out == true ? "in" : "out",
       doc.soc,
       doc.rint,
@@ -135,7 +144,7 @@ async function syncDb(auth: OAuth2Client): Promise<void> {
       .catch();
     const values = docs.map((doc) => {
       return [
-        `${doc.number.slice(0, 2)}${doc.number.slice(2, 4)}}`,
+        `${doc.number.slice(0, 2)}${doc.number.slice(2, 4)}`,
         doc.out == true ? "in" : "out",
         doc.soc,
         doc.rint,
