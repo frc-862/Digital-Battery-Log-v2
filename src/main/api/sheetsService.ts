@@ -76,72 +76,32 @@ async function authorize(): Promise<OAuth2Client> {
 }
 */
 async function syncDb(): Promise<void> {
-  const auth2 = new google.auth.GoogleAuth({
-    keyFile: CREDENTIALS_PATH,
-    scopes: SCOPES,
-  });
-  const client = await auth2.getClient();
-  //const sheets = google.sheets({ version: "v4", auth });
-  const sheets = google.sheets({ version: "v4", auth: client });
-  const res = await sheets.spreadsheets.values
-    .get({
-      spreadsheetId: spreadsheetId,
-      range: "Master Record!A2:E",
-    })
-    .catch();
-  let nextOpenRow: number;
-  if (res.data.values == undefined) {
-    nextOpenRow = 2;
-  } else {
-    nextOpenRow = res.data.values.length + 2;
-  }
-  const docs: HydratedDocument<iBatteryRecord>[] = await batteryRecord.find({
-    updated: false,
-  });
-  const range = `Master Record!A${nextOpenRow}:E`;
-
-  const values = docs.map((doc) => {
-    return [
-      `${doc.number.slice(0, 2)}${doc.number.slice(2, 4)}`,
-      doc.out == true ? "in" : "out",
-      doc.soc,
-      doc.rint,
-      doc.time,
-    ];
-  });
-  const resource = { values };
-  if (values.length > 0) {
-    await sheets.spreadsheets.values
-      .update({
+  if (!spreadsheetId) return;
+  try {
+    const auth2 = new google.auth.GoogleAuth({
+      keyFile: CREDENTIALS_PATH,
+      scopes: SCOPES,
+    });
+    const client = await auth2.getClient();
+    //const sheets = google.sheets({ version: "v4", auth });
+    const sheets = google.sheets({ version: "v4", auth: client });
+    const res = await sheets.spreadsheets.values
+      .get({
         spreadsheetId: spreadsheetId,
-        range: range,
-        valueInputOption: valueInputOption,
-        requestBody: resource,
+        range: "Master Record!A2:E",
       })
       .catch();
-  }
-  let batteries: string[] = [];
-  docs.forEach((doc) => {
-    let batteryString =
-      doc.number.toString().slice(0, 2) +
-      "." +
-      doc.number.toString().slice(2, 4);
-    if (!batteries.includes(batteryString)) {
-      batteries.push(batteryString);
+    let nextOpenRow: number;
+    if (res.data.values == undefined) {
+      nextOpenRow = 2;
+    } else {
+      nextOpenRow = res.data.values.length + 2;
     }
-  });
-  batteries.sort((a, b) => {
-    let aNum = parseInt(a.replace(".", ""));
-    let bNum = parseInt(b.replace(".", ""));
-    return aNum - bNum;
-  });
-  batteries.forEach(async (battery) => {
-    const docs: HydratedDocument<iBatteryRecord>[] = await batteryRecord
-      .find({
-        number: parseInt(battery.replace(".", "")),
-        updated: false,
-      })
-      .catch();
+    const docs: HydratedDocument<iBatteryRecord>[] = await batteryRecord.find({
+      updated: false,
+    });
+    const range = `Master Record!A${nextOpenRow}:E`;
+
     const values = docs.map((doc) => {
       return [
         `${doc.number.slice(0, 2)}${doc.number.slice(2, 4)}`,
@@ -152,104 +112,149 @@ async function syncDb(): Promise<void> {
       ];
     });
     const resource = { values };
-    await sheets.spreadsheets.values
-      .get({
-        spreadsheetId: spreadsheetId,
-        range: `${battery}!A2:E`,
-      })
-      .catch(async (err) => {
-        if (Object.entries(err)[2][1] == 400) {
-          await addSheet(sheets, spreadsheetId, battery).then(async () => {
-            await sheets.spreadsheets.values
-              .get({
-                spreadsheetId: spreadsheetId,
-                range: `${battery}!A2:E`,
-              })
-              .catch((err) => {
-                return console.error(err);
-              })
-              .then(async (res) => {
-                if (!res) return;
+    if (values.length > 0) {
+      await sheets.spreadsheets.values
+        .update({
+          spreadsheetId: spreadsheetId,
+          range: range,
+          valueInputOption: valueInputOption,
+          requestBody: resource,
+        })
+        .catch();
+    }
+    let batteries: string[] = [];
+    docs.forEach((doc) => {
+      let batteryString =
+        doc.number.toString().slice(0, 2) +
+        "." +
+        doc.number.toString().slice(2, 4);
+      if (!batteries.includes(batteryString)) {
+        batteries.push(batteryString);
+      }
+    });
+    batteries.sort((a, b) => {
+      let aNum = parseInt(a.replace(".", ""));
+      let bNum = parseInt(b.replace(".", ""));
+      return aNum - bNum;
+    });
+    batteries.forEach(async (battery) => {
+      const docs: HydratedDocument<iBatteryRecord>[] = await batteryRecord
+        .find({
+          number: parseInt(battery.replace(".", "")),
+          updated: false,
+        })
+        .catch();
+      const values = docs.map((doc) => {
+        return [
+          `${doc.number.slice(0, 2)}${doc.number.slice(2, 4)}`,
+          doc.out == true ? "in" : "out",
+          doc.soc,
+          doc.rint,
+          doc.time,
+        ];
+      });
+      const resource = { values };
+      await sheets.spreadsheets.values
+        .get({
+          spreadsheetId: spreadsheetId,
+          range: `${battery}!A2:E`,
+        })
+        .catch(async (err) => {
+          if (Object.entries(err)[2][1] == 400) {
+            await addSheet(sheets, spreadsheetId, battery).then(async () => {
+              await sheets.spreadsheets.values
+                .get({
+                  spreadsheetId: spreadsheetId,
+                  range: `${battery}!A2:E`,
+                })
+                .catch((err) => {
+                  return console.error(err);
+                })
+                .then(async (res) => {
+                  if (!res) return;
 
-                let nextOpenRow: number;
-                if (res.data.values == undefined) {
-                  nextOpenRow = 2;
-                } else {
-                  nextOpenRow = res.data.values.length + 2;
-                }
+                  let nextOpenRow: number;
+                  if (res.data.values == undefined) {
+                    nextOpenRow = 2;
+                  } else {
+                    nextOpenRow = res.data.values.length + 2;
+                  }
 
-                const range = `${battery}!A${nextOpenRow}:E${
-                  nextOpenRow + docs.length
-                }`;
+                  const range = `${battery}!A${nextOpenRow}:E${
+                    nextOpenRow + docs.length
+                  }`;
 
-                if (values.length > 0) {
-                  await sheets.spreadsheets.values
-                    .update({
-                      spreadsheetId: spreadsheetId,
-                      range: range,
-                      valueInputOption: valueInputOption,
-                      requestBody: resource,
-                    })
-                    .catch(() => {
-                      return;
-                    })
-                    .then(async () => {
-                      await batteryRecord
-                        .updateMany(
-                          {
-                            number: parseInt(battery.replace(".", "")),
-                            updated: false,
-                          },
-                          { updated: true },
-                        )
-                        .catch(() => {
-                          return;
-                        });
-                    });
-                }
-              });
-          });
-        }
-      })
-      .then(async (res) => {
-        if (!res) return;
-
-        let nextOpenRow: number;
-        if (res.data.values == undefined) {
-          nextOpenRow = 2;
-        } else {
-          nextOpenRow = res.data.values.length + 2;
-        }
-
-        const range = `${battery}!A${nextOpenRow + docs.length}:E`;
-
-        if (values.length > 0) {
-          await sheets.spreadsheets.values
-            .update({
-              spreadsheetId: spreadsheetId,
-              range: range,
-              valueInputOption: valueInputOption,
-              requestBody: resource,
-            })
-            .catch(() => {
-              return;
-            })
-            .then(async () => {
-              await batteryRecord
-                .updateMany(
-                  {
-                    number: parseInt(battery.replace(".", "")),
-                    updated: false,
-                  },
-                  { updated: true },
-                )
-                .catch(() => {
-                  return;
+                  if (values.length > 0) {
+                    await sheets.spreadsheets.values
+                      .update({
+                        spreadsheetId: spreadsheetId,
+                        range: range,
+                        valueInputOption: valueInputOption,
+                        requestBody: resource,
+                      })
+                      .catch(() => {
+                        return;
+                      })
+                      .then(async () => {
+                        await batteryRecord
+                          .updateMany(
+                            {
+                              number: parseInt(battery.replace(".", "")),
+                              updated: false,
+                            },
+                            { updated: true },
+                          )
+                          .catch(() => {
+                            return;
+                          });
+                      });
+                  }
                 });
             });
-        }
-      });
-  });
+          }
+        })
+        .then(async (res) => {
+          if (!res) return;
+
+          let nextOpenRow: number;
+          if (res.data.values == undefined) {
+            nextOpenRow = 2;
+          } else {
+            nextOpenRow = res.data.values.length + 2;
+          }
+
+          const range = `${battery}!A${nextOpenRow + docs.length}:E`;
+
+          if (values.length > 0) {
+            await sheets.spreadsheets.values
+              .update({
+                spreadsheetId: spreadsheetId,
+                range: range,
+                valueInputOption: valueInputOption,
+                requestBody: resource,
+              })
+              .catch(() => {
+                return;
+              })
+              .then(async () => {
+                await batteryRecord
+                  .updateMany(
+                    {
+                      number: parseInt(battery.replace(".", "")),
+                      updated: false,
+                    },
+                    { updated: true },
+                  )
+                  .catch(() => {
+                    return;
+                  });
+              });
+          }
+        });
+    });
+  } catch (err) {
+    return console.error(err);
+  }
 }
 /***
  * Adds a new sheet to the spreadsheet

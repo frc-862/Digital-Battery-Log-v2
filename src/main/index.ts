@@ -18,6 +18,7 @@ const createWindow = () => {
       contextIsolation: true,
     },
     frame: false,
+    show: false,
   });
 
   if (app.commandLine.hasSwitch("dev")) {
@@ -34,6 +35,10 @@ const createWindow = () => {
     // mainWindow.loadFile("../../.output/public/index.html");
     mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
     // REDIRECT TO FIRST WEBPAGE AGAIN
+  });
+  mainWindow.once("ready-to-show", () => {
+    mainWindow.webContents.setZoomLevel(-2.2);
+    mainWindow.show();
   });
 };
 
