@@ -1,6 +1,6 @@
 {
   "name": "electron-battery-logger",
-  "version": "2.2.1",
+  "version": "2.3.1",
   "description": "A digital battery logger for FRC",
   "main": "./dist/main/index.js",
   "type": "commonjs",

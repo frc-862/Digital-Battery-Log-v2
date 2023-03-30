@@ -133,7 +133,7 @@
       <div class="settings">
         <div class="setting">
           <div class="label">
-            <p>Sheets Link</p>
+            <p>Sheets Id</p>
           </div>
           <input
             type="text"

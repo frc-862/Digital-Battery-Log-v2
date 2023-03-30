@@ -6,8 +6,7 @@ import { ipc } from "./IPC";
 import path from "path";
 import db from "./db/db";
 const createWindow = () => {
-  // Create the browser window.
-  console.log(app.getPath("userData"));
+  // Create the browser window
   const mainWindow = new BrowserWindow({
     width: 1024,
     height: 600,
@@ -19,6 +18,7 @@ const createWindow = () => {
       contextIsolation: true,
     },
     frame: false,
+    show: false,
   });
 
   if (app.commandLine.hasSwitch("dev")) {
@@ -36,7 +36,10 @@ const createWindow = () => {
     mainWindow.loadURL(`file://${__dirname}/../../.output/public/index.html`);
     // REDIRECT TO FIRST WEBPAGE AGAIN
   });
-  mainWindow.webContents.setZoomLevel(0.6);
+  mainWindow.once("ready-to-show", () => {
+    mainWindow.webContents.setZoomLevel(-2.2);
+    mainWindow.show();
+  });
 };
 
 // This method will be called when Electron has finished
@@ -64,8 +67,7 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
-  if (config.store.api.sheetsSync == true) startSync();
-  app.getPath("userData");
+  if (config.store.api.sheetsSync.toString() == "true") startSync();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
