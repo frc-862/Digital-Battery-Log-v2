@@ -105,7 +105,7 @@ async function syncDb(): Promise<void> {
     const values = docs.map((doc) => {
       return [
         `${doc.number.slice(0, 2)}${doc.number.slice(2, 4)}`,
-        doc.out == true ? "in" : "out",
+        doc.out == true ? "out" : "in",
         doc.soc,
         doc.rint,
         doc.time,
@@ -147,7 +147,7 @@ async function syncDb(): Promise<void> {
       const values = docs.map((doc) => {
         return [
           `${doc.number.slice(0, 2)}${doc.number.slice(2, 4)}`,
-          doc.out == true ? "in" : "out",
+          doc.out == true ? "out" : "in",
           doc.soc,
           doc.rint,
           doc.time,
