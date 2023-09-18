@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   vite: {
     css: {
+      //config for scss and scss global variables
       preprocessorOptions: {
         scss: {
           additionalData:
@@ -10,6 +11,7 @@ export default defineNuxtConfig({
       },
     },
     resolve: {
+      //config for router. Without it, page routing will not work correctly.
       dedupe: ['vue-router']
     }
   },
@@ -17,7 +19,9 @@ export default defineNuxtConfig({
     baseURL: "./",
   },
   srcDir: "src/renderer",
+  //must disable ssl for electron app.
   ssr: false,
   modules: ["@pinia/nuxt"],
+  //config for router. Without it, page routing will not work correctly.
   router: { options: { hashMode: true } },
 });

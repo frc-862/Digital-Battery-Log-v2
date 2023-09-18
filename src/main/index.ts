@@ -46,13 +46,17 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  //call the ipc function to handle all ipc calls from renderer process
   ipc();
+  //connect to the database
   db(
     config.store.api.database.address,
     config.store.api.database.port.toString(),
     config.store.api.database.databaseName,
   );
+  //create the window
   createWindow();
+  //disable the content security policy
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {

@@ -75,9 +75,14 @@ async function authorize(): Promise<OAuth2Client> {
   return client;
 }
 */
+/**
+ * Syncs the database to the google sheet
+ * @returns void
+ */
 async function syncDb(): Promise<void> {
   if (!spreadsheetId) return;
   try {
+    // google Oauth2
     const auth2 = new google.auth.GoogleAuth({
       keyFile: CREDENTIALS_PATH,
       scopes: SCOPES,
@@ -85,6 +90,8 @@ async function syncDb(): Promise<void> {
     const client = await auth2.getClient();
     //const sheets = google.sheets({ version: "v4", auth });
     const sheets = google.sheets({ version: "v4", auth: client });
+
+    // get the next open row in the master record
     const res = await sheets.spreadsheets.values
       .get({
         spreadsheetId: spreadsheetId,
@@ -97,11 +104,14 @@ async function syncDb(): Promise<void> {
     } else {
       nextOpenRow = res.data.values.length + 2;
     }
+
+    // get all the logs that have not been updated
     const docs: HydratedDocument<iBatteryRecord>[] = await batteryRecord.find({
       updated: false,
     });
     const range = `Master Record!A${nextOpenRow}:E`;
 
+    // Map each document to an array of values for each column in the spreadsheet
     const values = docs.map((doc) => {
       return [
         `${doc.number.slice(0, 2)}${doc.number.slice(2, 4)}`,
@@ -111,7 +121,10 @@ async function syncDb(): Promise<void> {
         doc.time,
       ];
     });
+    // Create a resource object containing the values to be updated in the spreadsheet
     const resource = { values };
+
+    // If there are values to be updated, update the spreadsheet
     if (values.length > 0) {
       await sheets.spreadsheets.values
         .update({
@@ -122,6 +135,8 @@ async function syncDb(): Promise<void> {
         })
         .catch();
     }
+
+    // Create an array of unique battery numbers from the documents
     let batteries: string[] = [];
     docs.forEach((doc) => {
       let batteryString =
@@ -132,18 +147,25 @@ async function syncDb(): Promise<void> {
         batteries.push(batteryString);
       }
     });
+
+    // Sort the battery numbers in ascending order
     batteries.sort((a, b) => {
       let aNum = parseInt(a.replace(".", ""));
       let bNum = parseInt(b.replace(".", ""));
       return aNum - bNum;
     });
+
+    // For each battery, update the corresponding sheet in the spreadsheet
     batteries.forEach(async (battery) => {
+      // Find all documents with the current battery number that have not been updated
       const docs: HydratedDocument<iBatteryRecord>[] = await batteryRecord
         .find({
           number: parseInt(battery.replace(".", "")),
           updated: false,
         })
         .catch();
+
+      // Map each document to an array of values for each column in the spreadsheet
       const values = docs.map((doc) => {
         return [
           `${doc.number.slice(0, 2)}${doc.number.slice(2, 4)}`,
@@ -153,13 +175,16 @@ async function syncDb(): Promise<void> {
           doc.time,
         ];
       });
+      // Create a resource object containing the values to be updated in the spreadsheet
       const resource = { values };
+      // Try to get the current values in the sheet for the current battery
       await sheets.spreadsheets.values
         .get({
           spreadsheetId: spreadsheetId,
           range: `${battery}!A2:E`,
         })
         .catch(async (err) => {
+          // If the sheet doesn't exist, create it
           if (Object.entries(err)[2][1] == 400) {
             await addSheet(sheets, spreadsheetId, battery).then(async () => {
               await sheets.spreadsheets.values
@@ -183,7 +208,7 @@ async function syncDb(): Promise<void> {
                   const range = `${battery}!A${nextOpenRow}:E${
                     nextOpenRow + docs.length
                   }`;
-
+                  // If there are values to be updated, update the sheet
                   if (values.length > 0) {
                     await sheets.spreadsheets.values
                       .update({
@@ -196,6 +221,7 @@ async function syncDb(): Promise<void> {
                         return;
                       })
                       .then(async () => {
+                        // Mark all documents with the current battery number as updated
                         await batteryRecord
                           .updateMany(
                             {
@@ -224,7 +250,7 @@ async function syncDb(): Promise<void> {
           }
 
           const range = `${battery}!A${nextOpenRow + docs.length}:E`;
-
+          // If there are values to be updated, update the sheet
           if (values.length > 0) {
             await sheets.spreadsheets.values
               .update({
@@ -237,6 +263,7 @@ async function syncDb(): Promise<void> {
                 return;
               })
               .then(async () => {
+                // Mark all documents with the current battery number as updated
                 await batteryRecord
                   .updateMany(
                     {
@@ -257,7 +284,8 @@ async function syncDb(): Promise<void> {
   }
 }
 /***
- * Adds a new sheet to the spreadsheet
+ * This function adds a new sheet to a Google Sheets spreadsheet with the given name.
+ * It also adds a header row to the new sheet and formats it with a blue background and orange text.
  * @param sheets The google sheets object
  * @param spreadsheetId The id of the spreadsheet
  * @param tabName The name of the new tab
@@ -268,6 +296,7 @@ async function addSheet(
   spreadsheetId: string,
   tabName: string,
 ): Promise<void> {
+  // Create a resource object containing the request to add a new sheet with the given name
   const resource = {
     requests: [
       {
@@ -279,6 +308,7 @@ async function addSheet(
       },
     ],
   };
+  // Send a batch update request to the Google Sheets API to add the new sheet
   await sheets.spreadsheets
     .batchUpdate({
       spreadsheetId: spreadsheetId,
@@ -286,6 +316,7 @@ async function addSheet(
     })
     .catch((err: any) => console.error(err))
     .then(async (newSheet: any) => {
+      // Create a resource object containing the header row to add to the new sheet
       const headerResource = {
         values: [
           [
@@ -297,7 +328,7 @@ async function addSheet(
           ],
         ],
       };
-
+      // Create a resource object containing the formatting request for the header row
       const formattingResource = {
         requests: [
           {
@@ -339,12 +370,15 @@ async function addSheet(
         ],
       };
 
+      // Send a batch update request to the Google Sheets API to format the header row
       await sheets.spreadsheets
         .batchUpdate({
           spreadsheetId: spreadsheetId,
           resource: formattingResource,
         })
         .catch((err: any) => console.error(err));
+
+      // Send a values update request to the Google Sheets API to add the header row to the new sheet
       await sheets.spreadsheets.values
         .update({
           spreadsheetId: spreadsheetId,

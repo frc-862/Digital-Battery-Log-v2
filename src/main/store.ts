@@ -4,9 +4,9 @@ const defaults = {
   api: {
     sheetLink: "",
     syncTimeMinutes: 1,
-    centralServerMode: false,
+    centralServerMode: false, //un used
     sheetsSync: true,
-    centralServerAPIRoot: "",
+    centralServerAPIRoot: "", //un used
     database: {
       address: "mongodb://localhost",
       port: 27017,
@@ -49,4 +49,5 @@ const defaults = {
     },
   },
 };
+//create a new electron store (this will be mirrored to renderer process with ips and pinia)
 export let config = new Store<iConfigPrivate>({ defaults: defaults });
