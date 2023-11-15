@@ -6,6 +6,8 @@ import logIn from "./db/logIn";
 import { iBatteryRecord, iConfig } from "./types";
 import { getIP, killX } from "./helper";
 import { clearDB } from "./db/clearDB";
+
+// ipc function to handle all ipc calls from renderer process
 export const ipc = () => {
   ipcMain.handle("config-get", async (event): Promise<iConfig | boolean> => {
     try {

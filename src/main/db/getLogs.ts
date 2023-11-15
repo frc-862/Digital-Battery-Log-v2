@@ -5,10 +5,12 @@ export async function getAllLogs(
   historyLength: number,
 ): Promise<iBatteryRecord[] | boolean | undefined> {
   try {
+    // get all logs from the last designated history length
     const logs: HydratedDocument<iBatteryRecord>[] = await batteryRecord.find({
       timeEpoch: { $gte: Date.now() - historyLength },
     });
     if (logs) {
+      // create a new array of logs with only the data we need
       let logsData: iBatteryRecord[] = [];
       logs.forEach((log: HydratedDocument<iBatteryRecord>) => {
         logsData.push({
@@ -37,6 +39,7 @@ export async function getLatestLog(
   battery: string,
 ): Promise<iBatteryRecord | boolean | null> {
   try {
+    // get the latest log for the battery number
     const latest: HydratedDocument<iBatteryRecord>[] | null =
       await batteryRecord
         .find({ number: battery })
@@ -64,6 +67,7 @@ export async function getLogsByFilter(
   battery: string,
   inFilter: string,
 ) {
+  // get all logs from the last designated history length
   const params: any = { timeEpoch: { $gte: Date.now() - historyLength } };
   if (inFilter != "all") {
     params["out"] = inFilter == "out" ? true : false;

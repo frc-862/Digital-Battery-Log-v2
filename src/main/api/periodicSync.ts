@@ -5,6 +5,7 @@ const url = "https://www.google.com";
 import { config } from "../store";
 const minutes = config.store.api.syncTimeMinutes;
 export const startSync = () => {
+  // create a cron task to sync the sheets every x minutes
   cron.schedule(
     `*/${minutes % 60} *${
       Math.floor(minutes / 60) != 0 ? "/" + Math.floor(minutes / 60) : ""
@@ -16,6 +17,7 @@ export const startSync = () => {
   );
 };
 
+// check if the internet is connected
 const checkInternet = async () => {
   try {
     const response = await axios.get(url);
