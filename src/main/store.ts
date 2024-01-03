@@ -19,7 +19,7 @@ const defaults = {
   logging: {
     historyLengthHours: 24,
     batteryYearRangeLower: 20,
-    batteryYearRangeUpper: 23,
+    batteryYearRangeUpper: 24,
     batteryNumberRangeLower: 1,
     batteryNumberRangeUpper: 8,
     batteryLength: 4,
