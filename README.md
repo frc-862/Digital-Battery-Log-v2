@@ -8,7 +8,13 @@ Log battery sign-outs with the battery number, time signed out/in, and battery s
 2. Project Architecture 
 3. Settings Overview
 
-
+## Building for Raspberry Pi
+Works when building locally (win11)
+```bash
+npm run generate
+npm run build:linux
+```
+Finally `SCP` onto the pi (overwrite existing AppImage if needed)
 
 ## Installation and Dependencies
 
